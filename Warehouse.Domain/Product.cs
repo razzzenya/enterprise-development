@@ -4,13 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Classes
+namespace EnterpiseWarehouse;
+/// <summary>
+/// Товар
+/// </summary>
+public class Product
 {
-    public class Product
-    {
-        public int? id { get; set; }
-        public string? name { get; set; }
-        public int? quantity { get; set; }
-        public int? cellId { get; set; }
-    }
+    /// <summary>
+    /// Идентификатор
+    /// </summary>
+    public required int id { get; set; }
+    /// <summary>
+    /// Название
+    /// </summary>
+    public required string name { get; set; }
+    /// <summary>
+    /// Количество на складе
+    /// </summary>
+    public int? quantity { get; set; }
+    /// <summary>
+    /// Номер ячейки
+    /// </summary>
+    public int? cellId { get; set; }
 }
+

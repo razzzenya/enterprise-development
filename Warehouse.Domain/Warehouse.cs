@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Classes
+namespace EnterpiseWarehouse;
+/// <summary>
+/// Склад предприятия
+/// </summary>
+public class Warehouse
 {
-    public class Warehouse
-    {
-        public List<Product>? warehouse;
-    }
+    public List<Product> warehouse = [];
 }
+

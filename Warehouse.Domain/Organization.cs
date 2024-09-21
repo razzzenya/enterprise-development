@@ -4,11 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Classes
+namespace EnterpiseWarehouse;
+/// <summary>
+/// Организация
+/// </summary>
+public class Organization
 {
-    public class Organization
-    {
-        public string? name { get; set; }
-        public string? address { get; set; }
-    }
+    /// <summary>
+    /// Название
+    /// </summary>
+    public required string name { get; set; }
+    /// <summary>
+    /// Адрес
+    /// </summary>
+    public required string address { get; set; }
 }
+
