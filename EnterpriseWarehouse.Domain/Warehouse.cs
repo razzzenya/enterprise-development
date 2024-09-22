@@ -4,6 +4,6 @@
 /// </summary>
 public class Warehouse
 {
-    public List<Product> warehouse = [];
+    public Dictionary<int, Product> warehouse = [];
 }
 
