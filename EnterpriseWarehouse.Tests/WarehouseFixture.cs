@@ -1,4 +1,4 @@
-﻿using EnterpiseWarehouse;
+﻿using EnterpiseWarehouse.Domain;
 
 namespace EnterpriseWarehouse.Tests
 {
@@ -6,65 +6,51 @@ namespace EnterpriseWarehouse.Tests
     {
         public List<Organization> Organizations =
         [
-            new() {name = "TechCorp" , address = "123 Main St, Springfield"},
-            new() {name = "Innovate Solutions", address = "456 Elm St, Metropolis"},
-            new() {name = "Alpha Logistics", address = "789 Oak St, Gotham"},
-            new() {name = "Beta Distributors", address = "101 Maple Ave, Star City"},
-            new() {name = "Global Trade Ltd", address = "202 Birch St, Central City"},
-            new() {name = "Enterprise Inc.", address = "303 Cedar St, Keystone City"},
-            new() {name = "Techno Group", address = "404 Pine St, Coast City"},
-            new() {name = "Smart Systems", address = "505 Willow Ave, Blüdhaven"},
-            new() {name = "Quantum Enterprises", address = "606 Redwood St, Hub City"},
-            new() {name = "GreenEnergy Corp", address = "707 Cypress St, Fawcett City"}
+            new() {Id = 0, Name = "TechCorp", Address = "123 Main St, Springfield"},
+            new() {Id = 1, Name = "Innovate Solutions", Address = "456 Elm St, Metropolis"},
+            new() {Id = 2, Name = "Alpha Logistics", Address = "789 Oak St, Gotham"},
+            new() {Id = 3, Name = "Beta Distributors", Address = "101 Maple Ave, Star City"},
+            new() {Id = 4, Name = "Global Trade Ltd", Address = "202 Birch St, Central City"},
+            new() {Id = 5, Name = "Enterprise Inc.", Address = "303 Cedar St, Keystone City"},
+            new() {Id = 6, Name = "Techno Group", Address = "404 Pine St, Coast City"},
+            new() {Id = 7, Name = "Smart Systems", Address = "505 Willow Ave, Blüdhaven"},
+            new() {Id = 8, Name = "Quantum Enterprises", Address = "606 Redwood St, Hub City"},
+            new() {Id = 9, Name = "GreenEnergy Corp", Address = "707 Cypress St, Fawcett City"}
         ];
 
-        public List<Product> Products =
+        public List<Cell> Cells =
         [
-            new() {id = 1, name = "Laptop", quantity = 8, cellId = 0},
-            new() {id = 2, name = "Tablet", quantity = 6, cellId = 1},
-            new() {id = 3, name = "Monitor", quantity = 2, cellId = 2},
-            new() {id = 4, name = "Keyboard", quantity = 15, cellId = 3},
-            new() {id = 5, name = "Mouse", quantity = 3, cellId = 4},
-            new() {id = 1, name = "Laptop", quantity = 7, cellId = 5},
-            new() {id = 6, name = "Printer", quantity = 10, cellId = 6},
-            new() {id = 7, name = "Smartphone", quantity = 20, cellId = 7},
-            new() {id = 8, name = "Router", quantity = 13, cellId = 8},
-            new() {id = 9, name = "Headphones", quantity = 1, cellId = 9},
-            new() {id = 3, name = "Monitor", quantity = 20, cellId = 10},
-            new() {id = 10, name = "Webcam", quantity = 16, cellId = 11}
+            new() {Id = 0, Product = new Product {Id = 0, Code = 1, Name = "Laptop"}, Quantity = 8},
+            new() {Id = 1, Product = new Product {Id = 1, Code = 2, Name = "Tablet"}, Quantity = 6},
+            new() {Id = 2, Product = new Product {Id = 2, Code = 3, Name = "Monitor"}, Quantity = 2},
+            new() {Id = 3, Product = new Product {Id = 3, Code = 4, Name = "Keyboard"}, Quantity = 15},
+            new() {Id = 4, Product = new Product {Id = 4, Code = 5, Name = "Mouse"}, Quantity = 3},
+            new() {Id = 5, Product = new Product {Id = 5, Code = 1, Name = "Laptop"}, Quantity = 7},
+            new() {Id = 6, Product = new Product {Id = 6, Code = 6, Name = "Printer"}, Quantity = 10},
+            new() {Id = 7, Product = new Product {Id = 7, Code = 7, Name = "Smartphone"}, Quantity = 20},
+            new() {Id = 8, Product = new Product {Id = 8, Code = 8, Name = "Router"}, Quantity = 13},
+            new() {Id = 9, Product = new Product {Id = 9, Code = 9, Name = "Headphones"}, Quantity = 1},
+            new() {Id = 10, Product = new Product {Id = 10, Code = 3, Name = "Monitor"}, Quantity = 20},
+            new() {Id = 11, Product = new Product {Id = 11, Code = 10, Name = "Webcam"}, Quantity = 16}
         ];
 
         public List<Supply> Supplies;
-
-        public Dictionary<int, Product> Warehouse = new();
         public WarehouseFixture()
         {
             Supplies =
             [
-                new() {product = Products[0], organization = Organizations[0], quantity = 3, supplyDate = new DateTime(2015, 2, 3) },
-                new() {product = Products[1], organization = Organizations[1], quantity = 16, supplyDate = new DateTime(2022, 11, 15) },
-                new() {product = Products[2], organization = Organizations[2], quantity = 8, supplyDate = new DateTime(2019, 7, 22) },
-                new() {product = Products[3], organization = Organizations[3], quantity = 5, supplyDate = new DateTime(2021, 6, 12) },
-                new() {product = Products[4], organization = Organizations[4], quantity = 19, supplyDate = new DateTime(2021, 10, 9) },
-                new() {product = Products[5], organization = Organizations[5], quantity = 33, supplyDate = new DateTime(2013, 1, 28) },
-                new() {product = Products[6], organization = Organizations[6], quantity = 159, supplyDate = new DateTime(2015, 4, 5) },
-                new() {product = Products[7], organization = Organizations[7], quantity = 1, supplyDate = new DateTime(2011, 8, 14) },
-                new() {product = Products[4], organization = Organizations[7], quantity = 6, supplyDate = new DateTime(2016, 4, 12) },
-                new() {product = Products[4], organization = Organizations[7], quantity = 16, supplyDate = new DateTime(2013, 2, 15) }
+                new() {Product = Cells[0].Product, Organization = Organizations[0], Quantity = 3, SupplyDate = new DateTime(2015, 2, 3) },
+                new() {Product = Cells[1].Product, Organization = Organizations[1], Quantity = 16, SupplyDate = new DateTime(2022, 11, 15) },
+                new() {Product = Cells[2].Product, Organization = Organizations[2], Quantity = 8, SupplyDate = new DateTime(2019, 7, 22) },
+                new() {Product = Cells[3].Product, Organization = Organizations[3], Quantity = 5, SupplyDate = new DateTime(2021, 6, 12) },
+                new() {Product = Cells[4].Product, Organization = Organizations[4], Quantity = 19, SupplyDate = new DateTime(2021, 10, 9) },
+                new() {Product = Cells[5].Product, Organization = Organizations[5], Quantity = 33, SupplyDate = new DateTime(2013, 1, 28) },
+                new() {Product = Cells[6].Product, Organization = Organizations[6], Quantity = 159, SupplyDate = new DateTime(2015, 4, 5) },
+                new() {Product = Cells[7].Product, Organization = Organizations[7], Quantity = 1, SupplyDate = new DateTime(2011, 8, 14) },
+                new() {Product = Cells[4].Product, Organization = Organizations[7], Quantity = 6, SupplyDate = new DateTime(2016, 4, 12) },
+                new() {Product = Cells[4].Product, Organization = Organizations[7], Quantity = 16, SupplyDate = new DateTime(2013, 2, 15) }
 
             ];
-            Warehouse.Add(0, Products[0]);
-            Warehouse.Add(1, Products[1]);
-            Warehouse.Add(2, Products[2]);
-            Warehouse.Add(3, Products[3]);
-            Warehouse.Add(4, Products[4]);
-            Warehouse.Add(5, Products[5]);
-            Warehouse.Add(6, Products[6]);
-            Warehouse.Add(7, Products[7]);
-            Warehouse.Add(8, Products[8]);
-            Warehouse.Add(9, Products[9]);
-            Warehouse.Add(10, Products[10]);
-            Warehouse.Add(11, Products[11]);
         }
     }
 }

@@ -1,16 +1,20 @@
-﻿namespace EnterpiseWarehouse;
+﻿namespace EnterpiseWarehouse.Domain;
 /// <summary>
 /// Организация
 /// </summary>
 public class Organization
 {
     /// <summary>
+    /// Идентификатор
+    /// </summary>
+    public required int Id {  get; set; }
+    /// <summary>
     /// Название
     /// </summary>
-    public required string name { get; set; }
+    public required string Name { get; set; }
     /// <summary>
     /// Адрес
     /// </summary>
-    public required string address { get; set; }
+    public required string Address { get; set; }
 }
 

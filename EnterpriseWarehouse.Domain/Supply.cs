@@ -1,4 +1,4 @@
-﻿namespace EnterpiseWarehouse;
+﻿namespace EnterpiseWarehouse.Domain;
 /// <summary>
 /// Поставка товара
 /// </summary>
@@ -7,18 +7,18 @@ public class Supply
     /// <summary>
     /// Товар
     /// </summary>
-    public required Product product { get; set; }
+    public required Product Product { get; set; }
     /// <summary>
     /// Организация
     /// </summary>
-    public required Organization organization { get; set; }
+    public required Organization Organization { get; set; }
     /// <summary>
     /// Дата поставки
     /// </summary>
-    public DateTime? supplyDate { get; set; }
+    public DateTime? SupplyDate { get; set; }
     /// <summary>
     /// Количество поставленного товара
     /// </summary>
-    public int? quantity { get; set; }
+    public int? Quantity { get; set; }
 }
 
