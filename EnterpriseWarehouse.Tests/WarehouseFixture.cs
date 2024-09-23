@@ -36,7 +36,7 @@ namespace EnterpriseWarehouse.Tests
 
         public List<Supply> Supplies;
 
-        public Warehouse warehouse;
+        public Dictionary<int, Product> Warehouse = new();
         public WarehouseFixture()
         {
             Supplies =
@@ -48,22 +48,22 @@ namespace EnterpriseWarehouse.Tests
                 new() {product = Products[4], organization = Organizations[4], quantity = 19, supplyDate = new DateTime(2021, 10, 9) },
                 new() {product = Products[5], organization = Organizations[5], quantity = 33, supplyDate = new DateTime(2013, 1, 28) },
                 new() {product = Products[6], organization = Organizations[6], quantity = 159, supplyDate = new DateTime(2015, 4, 5) },
-                new() {product = Products[7], organization = Organizations[7], quantity = 1, supplyDate = new DateTime(2011, 8, 14) }
+                new() {product = Products[7], organization = Organizations[7], quantity = 1, supplyDate = new DateTime(2011, 8, 14) },
+                new() {product = Products[4], organization = Organizations[7], quantity = 6, supplyDate = new DateTime(2016, 4, 12) }
 
             ];
-            warehouse = new();
-            warehouse.warehouse.Add(0, Products[0]);
-            warehouse.warehouse.Add(1, Products[1]);
-            warehouse.warehouse.Add(2, Products[2]);
-            warehouse.warehouse.Add(3, Products[3]);
-            warehouse.warehouse.Add(4, Products[4]);
-            warehouse.warehouse.Add(5, Products[5]);
-            warehouse.warehouse.Add(6, Products[6]);
-            warehouse.warehouse.Add(7, Products[7]);
-            warehouse.warehouse.Add(8, Products[8]);
-            warehouse.warehouse.Add(9, Products[9]);
-            warehouse.warehouse.Add(10, Products[10]);
-            warehouse.warehouse.Add(11, Products[11]);
+            Warehouse.Add(0, Products[0]);
+            Warehouse.Add(1, Products[1]);
+            Warehouse.Add(2, Products[2]);
+            Warehouse.Add(3, Products[3]);
+            Warehouse.Add(4, Products[4]);
+            Warehouse.Add(5, Products[5]);
+            Warehouse.Add(6, Products[6]);
+            Warehouse.Add(7, Products[7]);
+            Warehouse.Add(8, Products[8]);
+            Warehouse.Add(9, Products[9]);
+            Warehouse.Add(10, Products[10]);
+            Warehouse.Add(11, Products[11]);
         }
     }
 }
