@@ -124,7 +124,7 @@ namespace EnterpriseWarehouse.Tests
                     ProductName = g.Key.ProductName,
                     OrganizationName = g.Key.OrganizationName,
                 })
-                .OrderByDescending(p => p.TotalQuantity) // Сортируем по количеству
+                .OrderByDescending(p => p.TotalQuantity)
                 .ToList();
 
             List<object> expectedData = new()

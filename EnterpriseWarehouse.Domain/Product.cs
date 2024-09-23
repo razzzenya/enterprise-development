@@ -5,7 +5,7 @@
 public class Product
 {
     /// <summary>
-    /// Идентификатор
+    /// Идентификатор 
     /// </summary>
     public required int id { get; set; }
     /// <summary>
