@@ -1,5 +1,4 @@
 using EnterpiseWarehouse;
-using System.Security.Cryptography;
 
 namespace EnterpriseWarehouse.Tests
 {
@@ -83,11 +82,65 @@ namespace EnterpriseWarehouse.Tests
                 .ToList();
             int maxQuantity = organizationsWithMaxSupply.FirstOrDefault()?.TotalQuantity ?? 0;
             var result = organizationsWithMaxSupply
-                .Where(o=>o.TotalQuantity == maxQuantity)
+                .Where(o => o.TotalQuantity == maxQuantity)
                 .Select(o => o.Organization)
                 .ToList();
 
             Assert.Equal(new List<Organization> { _fixture.Organizations[6] }, result);
+        }
+
+        [Fact]
+        public void ReturnFiveMaxQuantityProducts()
+        {
+            var products = _fixture.Warehouse
+                .GroupBy(p => p.Value.name)
+                .Select(g => new
+                {
+                    ProductName = g.Key,
+                    Quantity = g.Sum(p => p.Value.quantity ?? 0),
+                })
+                .OrderByDescending(p => p.Quantity)
+                .Take(5)
+                .ToList();
+            List<object> expectedData = new()
+            {
+                new{ProductName = "Monitor", Quantity = 22 },
+                new{ProductName = "Smartphone", Quantity = 20},
+                new{ProductName = "Webcam", Quantity = 16},
+                new{ProductName = "Laptop", Quantity = 15},
+                new{ProductName = "Keyboard", Quantity = 15}
+            };
+            Assert.Equal(expectedData, products);
+        }
+
+        [Fact]
+        public void ReturnQuantityProductSupplyToOrganiztions() 
+        {
+            var info = _fixture.Supplies
+                .GroupBy(p => new { ProductName = p.product.name, OrganizationName = p.organization.name })
+                .Select(g => new
+                {
+                    TotalQuantity = g.Sum(p => p.quantity ?? 0),
+                    ProductName = g.Key.ProductName,
+                    OrganizationName = g.Key.OrganizationName,
+                })
+                .OrderByDescending(p => p.TotalQuantity) // Сортируем по количеству
+                .ToList();
+
+            List<object> expectedData = new()
+            {
+                new{ TotalQuantity = 159, ProductName = "Printer", OrganizationName = "Techno Group" },
+                new{ TotalQuantity = 33, ProductName = "Laptop", OrganizationName = "Enterprise Inc." },
+                new{ TotalQuantity = 22, ProductName = "Mouse", OrganizationName = "Smart Systems" },
+                new{ TotalQuantity = 19, ProductName = "Mouse", OrganizationName = "Global Trade Ltd" },
+                new{ TotalQuantity = 16, ProductName = "Tablet", OrganizationName = "Innovate Solutions" },
+                new{ TotalQuantity = 8, ProductName = "Monitor", OrganizationName = "Alpha Logistics" },
+                new{ TotalQuantity = 5, ProductName = "Keyboard", OrganizationName = "Beta Distributors" },
+                new{ TotalQuantity = 3, ProductName = "Laptop", OrganizationName = "TechCorp" },
+                new{ TotalQuantity = 1, ProductName = "Smartphone", OrganizationName = "Smart Systems" }
+
+            };
+            Assert.Equal(expectedData, info);
         }
     }
 }

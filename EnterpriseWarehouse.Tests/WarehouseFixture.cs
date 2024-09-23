@@ -49,7 +49,8 @@ namespace EnterpriseWarehouse.Tests
                 new() {product = Products[5], organization = Organizations[5], quantity = 33, supplyDate = new DateTime(2013, 1, 28) },
                 new() {product = Products[6], organization = Organizations[6], quantity = 159, supplyDate = new DateTime(2015, 4, 5) },
                 new() {product = Products[7], organization = Organizations[7], quantity = 1, supplyDate = new DateTime(2011, 8, 14) },
-                new() {product = Products[4], organization = Organizations[7], quantity = 6, supplyDate = new DateTime(2016, 4, 12) }
+                new() {product = Products[4], organization = Organizations[7], quantity = 6, supplyDate = new DateTime(2016, 4, 12) },
+                new() {product = Products[4], organization = Organizations[7], quantity = 16, supplyDate = new DateTime(2013, 2, 15) }
 
             ];
             Warehouse.Add(0, Products[0]);
