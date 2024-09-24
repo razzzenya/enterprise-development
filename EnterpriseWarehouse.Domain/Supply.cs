@@ -19,10 +19,10 @@ public class Supply
     /// <summary>
     /// Дата поставки
     /// </summary>
-    public DateTime? SupplyDate { get; set; }
+    public required DateTime SupplyDate { get; set; }
     /// <summary>
     /// Количество поставленного товара
     /// </summary>
-    public int? Quantity { get; set; }
+    public required int Quantity { get; set; }
 }
 

@@ -11,10 +11,9 @@ public class Cell
     /// <summary>
     /// Товар
     /// </summary>
-    public required Product Product { get; set; }
+    public Product? Product { get; set; }
     /// <summary>
     /// Количество товара в ячейке
     /// </summary>
-    public int? Quantity { get; set; }
-
+    public required int Quantity { get; set; }
 }
