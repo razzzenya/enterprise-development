@@ -5,6 +5,10 @@
 public class Supply
 {
     /// <summary>
+    /// Идентификатор
+    /// </summary>
+    public required int Id { get; set; }
+    /// <summary>
     /// Товар
     /// </summary>
     public required Product Product { get; set; }
