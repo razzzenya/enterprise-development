@@ -55,7 +55,7 @@ public class WarehouseFixture
         new() {Id = 8, Product = Products[8], Quantity = 13},
         new() {Id = 9, Product = Products[9], Quantity = 1},
         new() {Id = 10, Product = Products[10], Quantity = 20},
-        new() {Id = 11, Product = Products[0], Quantity = 16}
+        new() {Id = 11, Product = Products[11], Quantity = 16}
         ];
         Supplies =
         [

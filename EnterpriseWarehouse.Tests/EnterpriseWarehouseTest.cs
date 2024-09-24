@@ -9,7 +9,7 @@ public class EnterpriseWarehouseTest(WarehouseFixture fixture) : IClassFixture<W
     [Fact]
     public void ReturnAllProductsSortedByName()
     {
-        var expectedData = new List<Product>
+        var expectedData = new List<Product?>
         {
             _fixture.Products[9],
             _fixture.Products[3],
