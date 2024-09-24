@@ -40,15 +40,15 @@ namespace EnterpriseWarehouse.Tests
             Supplies =
             [
                 new() {Id = 0, Product = Cells[0].Product, Organization = Organizations[0], Quantity = 3, SupplyDate = new DateTime(2015, 2, 3) },
-                new() {Id = 0, Product = Cells[1].Product, Organization = Organizations[1], Quantity = 16, SupplyDate = new DateTime(2022, 11, 15) },
-                new() {Id = 0, Product = Cells[2].Product, Organization = Organizations[2], Quantity = 8, SupplyDate = new DateTime(2019, 7, 22) },
-                new() {Id = 0, Product = Cells[3].Product, Organization = Organizations[3], Quantity = 5, SupplyDate = new DateTime(2021, 6, 12) },
-                new() {Id = 0, Product = Cells[4].Product, Organization = Organizations[4], Quantity = 19, SupplyDate = new DateTime(2021, 10, 9) },
-                new() {Id = 0, Product = Cells[5].Product, Organization = Organizations[5], Quantity = 33, SupplyDate = new DateTime(2013, 1, 28) },
-                new() {Id = 0, Product = Cells[6].Product, Organization = Organizations[6], Quantity = 159, SupplyDate = new DateTime(2015, 4, 5) },
-                new() {Id = 0, Product = Cells[7].Product, Organization = Organizations[7], Quantity = 1, SupplyDate = new DateTime(2011, 8, 14) },
-                new() {Id = 0, Product = Cells[4].Product, Organization = Organizations[7], Quantity = 6, SupplyDate = new DateTime(2016, 4, 12) },
-                new() {Id = 0, Product = Cells[4].Product, Organization = Organizations[7], Quantity = 16, SupplyDate = new DateTime(2013, 2, 15) }
+                new() {Id = 1, Product = Cells[1].Product, Organization = Organizations[1], Quantity = 16, SupplyDate = new DateTime(2022, 11, 15) },
+                new() {Id = 2, Product = Cells[2].Product, Organization = Organizations[2], Quantity = 8, SupplyDate = new DateTime(2019, 7, 22) },
+                new() {Id = 3, Product = Cells[3].Product, Organization = Organizations[3], Quantity = 5, SupplyDate = new DateTime(2021, 6, 12) },
+                new() {Id = 4, Product = Cells[4].Product, Organization = Organizations[4], Quantity = 19, SupplyDate = new DateTime(2021, 10, 9) },
+                new() {Id = 5, Product = Cells[5].Product, Organization = Organizations[5], Quantity = 33, SupplyDate = new DateTime(2013, 1, 28) },
+                new() {Id = 6, Product = Cells[6].Product, Organization = Organizations[6], Quantity = 159, SupplyDate = new DateTime(2015, 4, 5) },
+                new() {Id = 7, Product = Cells[7].Product, Organization = Organizations[7], Quantity = 1, SupplyDate = new DateTime(2011, 8, 14) },
+                new() {Id = 8, Product = Cells[4].Product, Organization = Organizations[7], Quantity = 6, SupplyDate = new DateTime(2016, 4, 12) },
+                new() {Id = 9, Product = Cells[4].Product, Organization = Organizations[7], Quantity = 16, SupplyDate = new DateTime(2013, 2, 15) }
 
             ];
         }
