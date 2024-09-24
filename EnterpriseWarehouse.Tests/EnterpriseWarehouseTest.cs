@@ -11,18 +11,18 @@ public class EnterpriseWarehouseTest(WarehouseFixture fixture) : IClassFixture<W
     {
         var expectedData = new List<Product>
         {
-            _fixture.Cells[9].Product,
-            _fixture.Cells[3].Product,
-            _fixture.Cells[0].Product,
-            _fixture.Cells[5].Product,
-            _fixture.Cells[2].Product,
-            _fixture.Cells[10].Product,
-            _fixture.Cells[4].Product,
-            _fixture.Cells[6].Product,
-            _fixture.Cells[8].Product,
-            _fixture.Cells[7].Product,
-            _fixture.Cells[1].Product,
-            _fixture.Cells[11].Product
+            _fixture.Products[9],
+            _fixture.Products[3],
+            _fixture.Products[0],
+            _fixture.Products[5],
+            _fixture.Products[2],
+            _fixture.Products[10],
+            _fixture.Products[4],
+            _fixture.Products[6],
+            _fixture.Products[8],
+            _fixture.Products[7],
+            _fixture.Products[1],
+            _fixture.Products[11]
         }; 
         var sortedProducts = _fixture.Cells
             .OrderBy(c => c.Product?.Name)
@@ -78,9 +78,8 @@ public class EnterpriseWarehouseTest(WarehouseFixture fixture) : IClassFixture<W
                 Organization = g.Key,
                 TotalQuantity = g.Sum(s => s.Quantity)
             })
-            .OrderByDescending(o => o.TotalQuantity)
             .ToList();
-        var maxQuantity = organizationsWithMaxSupply.MaxBy(o => o.TotalQuantity)?.TotalQuantity;
+        var maxQuantity = organizationsWithMaxSupply.Max(o => o.TotalQuantity);
         var result = organizationsWithMaxSupply
             .Where(o => o.TotalQuantity == maxQuantity)
             .Select(o => o.Organization)

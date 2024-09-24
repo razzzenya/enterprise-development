@@ -20,36 +20,55 @@ public class WarehouseFixture
 
     public List<Cell> Cells;
 
+    public List<Product> Products { get; set; }
+
     public List<Supply> Supplies;
     public WarehouseFixture()
     {
+
+        Products = 
+        [
+            new() { Id = 0, Code = 1, Name = "Laptop" },
+            new() { Id = 1, Code = 2, Name = "Tablet" },
+            new() { Id = 2, Code = 3, Name = "Monitor" },
+            new() { Id = 3, Code = 4, Name = "Keyboard" },
+            new() { Id = 4, Code = 5, Name = "Mouse" },
+            new() { Id = 5, Code = 1, Name = "Laptop" },
+            new() { Id = 6, Code = 6, Name = "Printer" },
+            new() { Id = 7, Code = 7, Name = "Smartphone" },
+            new() { Id = 8, Code = 8, Name = "Router" },
+            new() { Id = 9, Code = 9, Name = "Headphones" },
+            new() { Id = 10, Code = 3, Name = "Monitor" },
+            new() { Id = 11, Code = 10, Name = "Webcam" }
+        ];
+
         Cells =
         [
-        new() {Id = 0, Product = new Product {Id = 0, Code = 1, Name = "Laptop"}, Quantity = 8},
-        new() {Id = 1, Product = new Product {Id = 1, Code = 2, Name = "Tablet"}, Quantity = 6},
-        new() {Id = 2, Product = new Product {Id = 2, Code = 3, Name = "Monitor"}, Quantity = 2},
-        new() {Id = 3, Product = new Product {Id = 3, Code = 4, Name = "Keyboard"}, Quantity = 15},
-        new() {Id = 4, Product = new Product {Id = 4, Code = 5, Name = "Mouse"}, Quantity = 3},
-        new() {Id = 5, Product = new Product {Id = 5, Code = 1, Name = "Laptop"}, Quantity = 7},
-        new() {Id = 6, Product = new Product {Id = 6, Code = 6, Name = "Printer"}, Quantity = 10},
-        new() {Id = 7, Product = new Product {Id = 7, Code = 7, Name = "Smartphone"}, Quantity = 20},
-        new() {Id = 8, Product = new Product {Id = 8, Code = 8, Name = "Router"}, Quantity = 13},
-        new() {Id = 9, Product = new Product {Id = 9, Code = 9, Name = "Headphones"}, Quantity = 1},
-        new() {Id = 10, Product = new Product {Id = 10, Code = 3, Name = "Monitor"}, Quantity = 20},
-        new() {Id = 11, Product = new Product {Id = 11, Code = 10, Name = "Webcam"}, Quantity = 16}
+        new() {Id = 0, Product = Products[0], Quantity = 8},
+        new() {Id = 1, Product = Products[1], Quantity = 6},
+        new() {Id = 2, Product = Products[2], Quantity = 2},
+        new() {Id = 3, Product = Products[3], Quantity = 15},
+        new() {Id = 4, Product = Products[4], Quantity = 3},
+        new() {Id = 5, Product = Products[5], Quantity = 7},
+        new() {Id = 6, Product = Products[6], Quantity = 10},
+        new() {Id = 7, Product = Products[7], Quantity = 20},
+        new() {Id = 8, Product = Products[8], Quantity = 13},
+        new() {Id = 9, Product = Products[9], Quantity = 1},
+        new() {Id = 10, Product = Products[10], Quantity = 20},
+        new() {Id = 11, Product = Products[0], Quantity = 16}
         ];
         Supplies =
         [
-            new() {Id = 0, Product = Cells[0].Product, Organization = Organizations[0], Quantity = 3, SupplyDate = new DateTime(2015, 2, 3) },
-            new() {Id = 1, Product = Cells[1].Product, Organization = Organizations[1], Quantity = 16, SupplyDate = new DateTime(2022, 11, 15) },
-            new() {Id = 2, Product = Cells[2].Product, Organization = Organizations[2], Quantity = 8, SupplyDate = new DateTime(2019, 7, 22) },
-            new() {Id = 3, Product = Cells[3].Product, Organization = Organizations[3], Quantity = 5, SupplyDate = new DateTime(2021, 6, 12) },
-            new() {Id = 4, Product = Cells[4].Product, Organization = Organizations[4], Quantity = 19, SupplyDate = new DateTime(2021, 10, 9) },
-            new() {Id = 5, Product = Cells[5].Product, Organization = Organizations[5], Quantity = 33, SupplyDate = new DateTime(2013, 1, 28) },
-            new() {Id = 6, Product = Cells[6].Product, Organization = Organizations[6], Quantity = 159, SupplyDate = new DateTime(2015, 4, 5) },
-            new() {Id = 7, Product = Cells[7].Product, Organization = Organizations[7], Quantity = 1, SupplyDate = new DateTime(2011, 8, 14) },
-            new() {Id = 8, Product = Cells[4].Product, Organization = Organizations[7], Quantity = 6, SupplyDate = new DateTime(2016, 4, 12) },
-            new() {Id = 9, Product = Cells[4].Product, Organization = Organizations[7], Quantity = 16, SupplyDate = new DateTime(2013, 2, 15) }
+            new() {Id = 0, Product = Products[0], Organization = Organizations[0], Quantity = 3, SupplyDate = new DateTime(2015, 2, 3) },
+            new() {Id = 1, Product = Products[1], Organization = Organizations[1], Quantity = 16, SupplyDate = new DateTime(2022, 11, 15) },
+            new() {Id = 2, Product = Products[2], Organization = Organizations[2], Quantity = 8, SupplyDate = new DateTime(2019, 7, 22) },
+            new() {Id = 3, Product = Products[3], Organization = Organizations[3], Quantity = 5, SupplyDate = new DateTime(2021, 6, 12) },
+            new() {Id = 4, Product = Products[4], Organization = Organizations[4], Quantity = 19, SupplyDate = new DateTime(2021, 10, 9) },
+            new() {Id = 5, Product = Products[5], Organization = Organizations[5], Quantity = 33, SupplyDate = new DateTime(2013, 1, 28) },
+            new() {Id = 6, Product = Products[6], Organization = Organizations[6], Quantity = 159, SupplyDate = new DateTime(2015, 4, 5) },
+            new() {Id = 7, Product = Products[7], Organization = Organizations[7], Quantity = 1, SupplyDate = new DateTime(2011, 8, 14) },
+            new() {Id = 8, Product = Products[4], Organization = Organizations[7], Quantity = 6, SupplyDate = new DateTime(2016, 4, 12) },
+            new() {Id = 9, Product = Products[4], Organization = Organizations[7], Quantity = 16, SupplyDate = new DateTime(2013, 2, 15) }
 
         ];
     }
