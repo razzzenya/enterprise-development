@@ -20,27 +20,25 @@ public class WarehouseFixture
 
     public List<Cell> Cells;
 
-    public List<Product> Products { get; set; }
+    public List<Product> Products = 
+    [
+        new() { Id = 0, Code = 1, Name = "Laptop" },
+        new() { Id = 1, Code = 2, Name = "Tablet" },
+        new() { Id = 2, Code = 3, Name = "Monitor" },
+        new() { Id = 3, Code = 4, Name = "Keyboard" },
+        new() { Id = 4, Code = 5, Name = "Mouse" },
+        new() { Id = 5, Code = 1, Name = "Laptop" },
+        new() { Id = 6, Code = 6, Name = "Printer" },
+        new() { Id = 7, Code = 7, Name = "Smartphone" },
+        new() { Id = 8, Code = 8, Name = "Router" },
+        new() { Id = 9, Code = 9, Name = "Headphones" },
+        new() { Id = 10, Code = 3, Name = "Monitor" },
+        new() { Id = 11, Code = 10, Name = "Webcam" }
+    ];
 
     public List<Supply> Supplies;
     public WarehouseFixture()
     {
-
-        Products = 
-        [
-            new() { Id = 0, Code = 1, Name = "Laptop" },
-            new() { Id = 1, Code = 2, Name = "Tablet" },
-            new() { Id = 2, Code = 3, Name = "Monitor" },
-            new() { Id = 3, Code = 4, Name = "Keyboard" },
-            new() { Id = 4, Code = 5, Name = "Mouse" },
-            new() { Id = 5, Code = 1, Name = "Laptop" },
-            new() { Id = 6, Code = 6, Name = "Printer" },
-            new() { Id = 7, Code = 7, Name = "Smartphone" },
-            new() { Id = 8, Code = 8, Name = "Router" },
-            new() { Id = 9, Code = 9, Name = "Headphones" },
-            new() { Id = 10, Code = 3, Name = "Monitor" },
-            new() { Id = 11, Code = 10, Name = "Webcam" }
-        ];
 
         Cells =
         [
