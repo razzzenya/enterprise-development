@@ -18,8 +18,6 @@ public class WarehouseFixture
         new() {Id = 9, Name = "GreenEnergy Corp", Address = "707 Cypress St, Fawcett City"}
     ];
 
-    public List<Cell> Cells;
-
     public List<Product> Products = 
     [
         new() { Id = 0, Code = 1, Name = "Laptop" },
@@ -36,24 +34,25 @@ public class WarehouseFixture
         new() { Id = 11, Code = 10, Name = "Webcam" }
     ];
 
+    public List<Cell> Cells;
+
     public List<Supply> Supplies;
     public WarehouseFixture()
     {
-
         Cells =
         [
-        new() {Id = 0, Product = Products[0], Quantity = 8},
-        new() {Id = 1, Product = Products[1], Quantity = 6},
-        new() {Id = 2, Product = Products[2], Quantity = 2},
-        new() {Id = 3, Product = Products[3], Quantity = 15},
-        new() {Id = 4, Product = Products[4], Quantity = 3},
-        new() {Id = 5, Product = Products[5], Quantity = 7},
-        new() {Id = 6, Product = Products[6], Quantity = 10},
-        new() {Id = 7, Product = Products[7], Quantity = 20},
-        new() {Id = 8, Product = Products[8], Quantity = 13},
-        new() {Id = 9, Product = Products[9], Quantity = 1},
-        new() {Id = 10, Product = Products[10], Quantity = 20},
-        new() {Id = 11, Product = Products[11], Quantity = 16}
+            new() {Id = 0, Product = Products[0], Quantity = 8},
+            new() {Id = 1, Product = Products[1], Quantity = 6},
+            new() {Id = 2, Product = Products[2], Quantity = 2},
+            new() {Id = 3, Product = Products[3], Quantity = 15},
+            new() {Id = 4, Product = Products[4], Quantity = 3},
+            new() {Id = 5, Product = Products[5], Quantity = 7},
+            new() {Id = 6, Product = Products[6], Quantity = 10},
+            new() {Id = 7, Product = Products[7], Quantity = 20},
+            new() {Id = 8, Product = Products[8], Quantity = 13},
+            new() {Id = 9, Product = Products[9], Quantity = 1},
+            new() {Id = 10, Product = Products[10], Quantity = 20},
+            new() {Id = 11, Product = Products[11], Quantity = 16}
         ];
         Supplies =
         [
