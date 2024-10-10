@@ -1,4 +1,4 @@
-﻿namespace EnterpiseWarehouse.Domain;
+﻿namespace EnterpriseWarehouse.Domain.Entities;
 /// <summary>
 /// Ячейка склада
 /// </summary>

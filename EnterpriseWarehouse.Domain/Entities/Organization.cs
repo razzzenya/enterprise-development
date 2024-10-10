@@ -1,4 +1,4 @@
-﻿namespace EnterpiseWarehouse.Domain;
+﻿namespace EnterpriseWarehouse.Domain.Entities;
 /// <summary>
 /// Организация
 /// </summary>
@@ -7,7 +7,7 @@ public class Organization
     /// <summary>
     /// Идентификатор
     /// </summary>
-    public required int Id {  get; set; }
+    public required int Id { get; set; }
     /// <summary>
     /// Название
     /// </summary>

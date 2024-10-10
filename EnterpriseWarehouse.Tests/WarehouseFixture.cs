@@ -1,4 +1,4 @@
-﻿using EnterpiseWarehouse.Domain;
+﻿using EnterpriseWarehouse.Domain.Entities;
 
 namespace EnterpriseWarehouse.Tests;
 
@@ -66,7 +66,6 @@ public class WarehouseFixture
             new() {Id = 7, Product = Products[7], Organization = Organizations[7], Quantity = 1, SupplyDate = new DateTime(2011, 8, 14) },
             new() {Id = 8, Product = Products[4], Organization = Organizations[7], Quantity = 6, SupplyDate = new DateTime(2016, 4, 12) },
             new() {Id = 9, Product = Products[4], Organization = Organizations[7], Quantity = 16, SupplyDate = new DateTime(2013, 2, 15) }
-
         ];
     }
 }

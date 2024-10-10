@@ -1,4 +1,4 @@
-using EnterpiseWarehouse.Domain;
+using EnterpriseWarehouse.Domain.Entities;
 
 namespace EnterpriseWarehouse.Tests;
 
