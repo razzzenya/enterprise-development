@@ -1,8 +1,9 @@
-﻿using EnterpriseWarehouse.Domain.Entities;
+﻿using EnterpriseWarehouse.API.DTO;
+using EnterpriseWarehouse.Domain.Entities;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class ProductService : IEntityService<Product>
+public class ProductService : IEntityService<Product, ProductCreateDTO, ProductDTO>
 {
     private readonly List<Product> _products = [];
 
@@ -12,11 +13,16 @@ public class ProductService : IEntityService<Product>
 
     public Product? GetById(int id) => _products.FirstOrDefault(o => o.Id == id);
 
-    public Product Add(Product product)
+    public bool Add(ProductCreateDTO newProduct)
     {
-        product.Id = _id++;
+        var product = new Product
+        {
+            Id = _id++,
+            Name = newProduct.Name,
+            Code = newProduct.Code,
+        };
         _products.Add(product);
-        return product;
+        return true;
     }
 
     public bool Delete(int id)
@@ -30,7 +36,7 @@ public class ProductService : IEntityService<Product>
         return true;
     }
 
-    public bool Update(Product updatedProduct)
+    public bool Update(ProductDTO updatedProduct)
     {
         var product = GetById(updatedProduct.Id);
         if (product == null)

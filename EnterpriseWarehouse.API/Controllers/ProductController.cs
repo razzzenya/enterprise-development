@@ -1,4 +1,5 @@
-﻿using EnterpriseWarehouse.API.Services;
+﻿using EnterpriseWarehouse.API.DTO;
+using EnterpriseWarehouse.API.Services;
 using EnterpriseWarehouse.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,12 +45,18 @@ public class ProductController(ProductService service) : ControllerBase
     /// Добавляет новый продукт.
     /// </summary>
     /// <param name="newProduct">Информация о новом продукте.</param>
-    /// <returns>Созданный продукт.</returns>
+    /// <returns>Результат операции.</returns>
     /// <response code="200">Продукт успешно добавлен.</response>
+    /// /// <response code="404">Продукт не был добавлен.</response>
     [HttpPost]
-    public ActionResult<Product> Post(Product newProduct)
+    public ActionResult Post(ProductCreateDTO newProduct)
     {
-        return Ok(service.Add(newProduct));
+        var result = service.Add(newProduct);
+        if (!result)
+        {
+            return NotFound();
+        }
+        return Ok();
     }
 
     /// <summary>
@@ -60,7 +67,7 @@ public class ProductController(ProductService service) : ControllerBase
     /// <response code="200">Продукт успешно обновлён.</response>
     /// <response code="404">Продукт с указанным идентификатором не найден.</response>
     [HttpPut]
-    public ActionResult Put(Product newProduct)
+    public ActionResult Put(ProductDTO newProduct)
     {
         var result = service.Update(newProduct);
         if (!result)

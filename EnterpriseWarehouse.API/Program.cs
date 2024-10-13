@@ -13,8 +13,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddSingleton<OrganizationService>();
 builder.Services.AddSingleton<ProductService>();
-builder.Services.AddSingleton<SupplyService>();
 builder.Services.AddSingleton<CellService>();
+builder.Services.AddSingleton<SupplyService>();
 builder.Services.AddSingleton<QueryService>();
 builder.Services.AddControllers();
 

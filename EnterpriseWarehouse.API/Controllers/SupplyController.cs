@@ -1,4 +1,5 @@
-﻿using EnterpriseWarehouse.API.Services;
+﻿using EnterpriseWarehouse.API.DTO;
+using EnterpriseWarehouse.API.Services;
 using EnterpriseWarehouse.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,12 +45,18 @@ public class SupplyController(SupplyService service) : ControllerBase
     /// Добавляет новую поставку.
     /// </summary>
     /// <param name="newSupply">Информация о новой поставке.</param>
-    /// <returns>Созданная поставка.</returns>
+    /// <returns>Результат операции.</returns>
     /// <response code="200">Поставка успешно добавлена.</response>
+    /// /// <response code="404">Поставка не была добавлена.</response>
     [HttpPost]
-    public ActionResult<Supply> Post(Supply newSupply)
+    public ActionResult<Supply> Post(SupplyCreateDTO newSupply)
     {
-        return Ok(service.Add(newSupply));
+        var result = service.Add(newSupply);
+        if (!result)
+        {
+            return NotFound();
+        }
+        return Ok();
     }
 
     /// <summary>
@@ -60,7 +67,7 @@ public class SupplyController(SupplyService service) : ControllerBase
     /// <response code="200">Поставка успешно обновлена.</response>
     /// <response code="404">Поставка с указанным идентификатором не найдена.</response>
     [HttpPut]
-    public ActionResult Put(Supply newSupply)
+    public ActionResult Put(SupplyDTO newSupply)
     {
         var result = service.Update(newSupply);
         if (!result)

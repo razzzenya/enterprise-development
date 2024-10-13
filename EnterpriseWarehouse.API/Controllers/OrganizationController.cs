@@ -1,4 +1,5 @@
-﻿using EnterpriseWarehouse.API.Services;
+﻿using EnterpriseWarehouse.API.DTO;
+using EnterpriseWarehouse.API.Services;
 using EnterpriseWarehouse.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,12 +45,18 @@ public class OrganizationController(OrganizationService service) : ControllerBas
     /// Добавляет новую организацию.
     /// </summary>
     /// <param name="newOrganization">Информация о новой организации.</param>
-    /// <returns>Созданная организация.</returns>
+    /// <returns>Результат операции.</returns>
     /// <response code="200">Организация успешно добавлена.</response>
+    /// <response code="404">Организация не была добавлена.</response>
     [HttpPost]
-    public ActionResult<Organization> Post(Organization newOrganization)
+    public ActionResult Post(OrganizationCreateDTO newOrganization)
     {
-        return Ok(service.Add(newOrganization));
+        var result = service.Add(newOrganization);
+        if (!result)
+        {
+            return NotFound();
+        }
+        return Ok();
     }
 
     /// <summary>
@@ -60,7 +67,7 @@ public class OrganizationController(OrganizationService service) : ControllerBas
     /// <response code="200">Организация успешно обновлена.</response>
     /// <response code="404">Организация с указанным идентификатором не найдена.</response>
     [HttpPut]
-    public ActionResult Put(Organization newOrganization)
+    public ActionResult Put(OrganizationDTO newOrganization)
     {
         var result = service.Update(newOrganization);
         if (!result)

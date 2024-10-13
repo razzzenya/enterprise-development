@@ -1,4 +1,5 @@
-﻿using EnterpriseWarehouse.API.Services;
+﻿using EnterpriseWarehouse.API.DTO;
+using EnterpriseWarehouse.API.Services;
 using EnterpriseWarehouse.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,12 +45,18 @@ public class CellController(CellService service) : ControllerBase
     /// Добавляет новую ячейку на склад.
     /// </summary>
     /// <param name="newCell">Информация о новой ячейке.</param>
-    /// <returns>Созданная ячейка склада.</returns>
+    /// <returns>Результат операции.</returns>
     /// <response code="200">Ячейка успешно добавлена.</response>
+    /// /// <response code="404">Ячейка не была добавлена.</response>
     [HttpPost]
-    public ActionResult<Cell> Post(Cell newCell)
+    public ActionResult Post(CellCreateDTO newCell)
     {
-        return Ok(service.Add(newCell));
+        var result = service.Add(newCell);
+        if (!result)
+        {
+            return NotFound();
+        }
+        return Ok();
     }
 
     /// <summary>
@@ -60,7 +67,7 @@ public class CellController(CellService service) : ControllerBase
     /// <response code="200">Ячейка успешно обновлена.</response>
     /// <response code="404">Ячейка с указанным идентификатором не найдена.</response>
     [HttpPut]
-    public ActionResult Put(Cell newCell)
+    public ActionResult Put(CellDTO newCell)
     {
         var result = service.Update(newCell);
         if (!result)

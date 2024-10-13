@@ -1,8 +1,9 @@
-﻿using EnterpriseWarehouse.Domain.Entities;
+﻿using EnterpriseWarehouse.API.DTO;
+using EnterpriseWarehouse.Domain.Entities;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class OrganizationService : IEntityService<Organization>
+public class OrganizationService : IEntityService<Organization, OrganizationCreateDTO, OrganizationDTO>
 {
     private readonly List<Organization> _organizations = [];
 
@@ -12,11 +13,16 @@ public class OrganizationService : IEntityService<Organization>
 
     public Organization? GetById(int id) =>_organizations.FirstOrDefault(o => o.Id == id);
 
-    public Organization Add(Organization organization)
+    public bool Add(OrganizationCreateDTO newOrganization)
     {
-        organization.Id = _id++;
+        var organization = new Organization
+        {
+            Id = _id++,
+            Name = newOrganization.Name,
+            Address = newOrganization.Address
+        };
         _organizations.Add(organization);
-        return organization;
+        return true;
     }
 
     public bool Delete(int id)
@@ -30,7 +36,7 @@ public class OrganizationService : IEntityService<Organization>
         return true;
     }
 
-    public bool Update(Organization updatedOrganization)
+    public bool Update(OrganizationDTO updatedOrganization)
     {
         var organization = GetById(updatedOrganization.Id);
         if (organization == null)
