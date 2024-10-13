@@ -2,32 +2,26 @@
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class OrganizationService
+public class OrganizationService : IEntityService<Organization>
 {
     private readonly List<Organization> _organizations = [];
 
     private int _id = 1;
 
-    public List<Organization> GetOrganizations()
-    {
-        return _organizations;
-    }
+    public List<Organization> GetAll() => _organizations;
 
-    public Organization? GetOrganizationById(int id)
-    {
-        return _organizations.Find(o => o.Id == id);
-    }
+    public Organization? GetById(int id) =>_organizations.FirstOrDefault(o => o.Id == id);
 
-    public Organization AddOrganization(Organization organization)
+    public Organization Add(Organization organization)
     {
         organization.Id = _id++;
         _organizations.Add(organization);
         return organization;
     }
 
-    public bool DeleteOrganization(int id)
+    public bool Delete(int id)
     {
-        var organization = GetOrganizationById(id);
+        var organization = GetById(id);
         if (organization == null)
         {
             return false;
@@ -36,9 +30,9 @@ public class OrganizationService
         return true;
     }
 
-    public bool UpdateOrganization(Organization updatedOrganization)
+    public bool Update(Organization updatedOrganization)
     {
-        var organization = GetOrganizationById(updatedOrganization.Id);
+        var organization = GetById(updatedOrganization.Id);
         if (organization == null)
         {
             return false;

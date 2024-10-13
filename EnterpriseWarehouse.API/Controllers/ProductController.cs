@@ -4,32 +4,65 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EnterpriseWarehouse.API.Controllers;
 
+/// <summary>
+/// Контроллер для управления продуктами.
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class ProductController(ProductService service) : ControllerBase
 {
+    /// <summary>
+    /// Возвращает список всех продуктов.
+    /// </summary>
+    /// <returns>Список всех продуктов.</returns>
+    /// <response code="200">Список успешно возвращён.</response>
     [HttpGet]
-    public ActionResult<IEnumerable<Product>> GetProducts()
+    public ActionResult<IEnumerable<Product>> Get()
     {
-        return Ok(service.GetProducts());
+        return Ok(service.GetAll());
     }
 
+    /// <summary>
+    /// Возвращает информацию о продукте по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор продукта.</param>
+    /// <returns>Продукт с указанным идентификатором.</returns>
+    /// <response code="200">Продукт найден и возвращён успешно.</response>
+    /// <response code="404">Продукт с указанным идентификатором не найден.</response>
     [HttpGet("{id}")]
-    public ActionResult<Product> GetById(int id)
+    public ActionResult<Product> Get(int id)
     {
-        return Ok(service.GetProductById(id));
+        var product = service.GetById(id);
+        if (product == null)
+        {
+            return NotFound();
+        }
+        return Ok(product);
     }
 
+    /// <summary>
+    /// Добавляет новый продукт.
+    /// </summary>
+    /// <param name="newProduct">Информация о новом продукте.</param>
+    /// <returns>Созданный продукт.</returns>
+    /// <response code="200">Продукт успешно добавлен.</response>
     [HttpPost]
-    public ActionResult<Product> AddProduct(Product newProduct)
+    public ActionResult<Product> Post(Product newProduct)
     {
-        return Ok(service.AddProduct(newProduct));
+        return Ok(service.Add(newProduct));
     }
 
+    /// <summary>
+    /// Обновляет информацию о существующем продукте.
+    /// </summary>
+    /// <param name="newProduct">Обновлённая информация о продукте.</param>
+    /// <returns>Результат операции обновления.</returns>
+    /// <response code="200">Продукт успешно обновлён.</response>
+    /// <response code="404">Продукт с указанным идентификатором не найден.</response>
     [HttpPut]
-    public ActionResult UpdateProduct(Product newProduct)
+    public ActionResult Put(Product newProduct)
     {
-        var result = service.UpdateProduct(newProduct);
+        var result = service.Update(newProduct);
         if (!result)
         {
             return NotFound();
@@ -37,10 +70,17 @@ public class ProductController(ProductService service) : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Удаляет продукт по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор продукта.</param>
+    /// <returns>Результат операции удаления.</returns>
+    /// <response code="200">Продукт успешно удалён.</response>
+    /// <response code="404">Продукт с указанным идентификатором не найден.</response>
     [HttpDelete]
-    public ActionResult DeleteProduct(int id)
+    public ActionResult Delete(int id)
     {
-        var result = service.DeleteProduct(id);
+        var result = service.Delete(id);
         if (!result)
         {
             return NotFound();

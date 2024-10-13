@@ -2,32 +2,26 @@
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class ProductService
+public class ProductService : IEntityService<Product>
 {
     private readonly List<Product> _products = [];
 
     private int _id = 1;
 
-    public List<Product> GetProducts()
-    {
-        return _products;
-    }
+    public List<Product> GetAll() => _products;
 
-    public Product? GetProductById(int id)
-    {
-        return _products.Find(o => o.Id == id);
-    }
+    public Product? GetById(int id) => _products.FirstOrDefault(o => o.Id == id);
 
-    public Product AddProduct(Product product)
+    public Product Add(Product product)
     {
         product.Id = _id++;
         _products.Add(product);
         return product;
     }
 
-    public bool DeleteProduct(int id)
+    public bool Delete(int id)
     {
-        var product = GetProductById(id);
+        var product = GetById(id);
         if (product == null)
         {
             return false;
@@ -36,9 +30,9 @@ public class ProductService
         return true;
     }
 
-    public bool UpdateProduct(Product updatedProduct)
+    public bool Update(Product updatedProduct)
     {
-        var product = GetProductById(updatedProduct.Id);
+        var product = GetById(updatedProduct.Id);
         if (product == null)
         {
             return false;

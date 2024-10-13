@@ -2,32 +2,26 @@
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class SupplyService
+public class SupplyService : IEntityService<Supply>
 {
     private readonly List<Supply> _supplies = [];
 
     private int _id = 1;
 
-    public List<Supply> GetSupplies()
-    {
-        return _supplies;
-    }
+    public List<Supply> GetAll() => _supplies;
 
-    public Supply? GetSupplyById(int id)
-    {
-        return _supplies.Find(o => o.Id == id);
-    }
+    public Supply? GetById(int id) => _supplies.FirstOrDefault(o => o.Id == id);
 
-    public Supply AddSupply(Supply supply)
+    public Supply Add(Supply supply)
     {
         supply.Id = _id++;
         _supplies.Add(supply);
         return supply;
     }
 
-    public bool DeleteSupply(int id)
+    public bool Delete(int id)
     {
-        var supply = GetSupplyById(id);
+        var supply = GetById(id);
         if (supply == null)
         {
             return false;
@@ -36,9 +30,9 @@ public class SupplyService
         return true;
     }
 
-    public bool UpdateSupply(Supply updatedSupply)
+    public bool Update(Supply updatedSupply)
     {
-        var supply = GetSupplyById(updatedSupply.Id);
+        var supply = GetById(updatedSupply.Id);
         if (supply == null)
         {
             return false;

@@ -2,43 +2,35 @@
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class CellService
+public class CellService : IEntityService<Cell>
 {
     private readonly List<Cell> _cells = [];
 
     private int _id = 1;
 
-    public List<Cell> GetCells()
-    {
-        return _cells;
-    }
+    public List<Cell> GetAll() => _cells;
+    public Cell? GetById(int id) => _cells.FirstOrDefault(o => o.Id == id);
 
-    public Cell? GetCellById(int id)
-    {
-        return _cells.Find(o => o.Id == id);
-    }
-
-    public Cell AddCell(Cell cell)
+    public Cell Add(Cell cell)
     {
         cell.Id = _id++;
         _cells.Add(cell);
         return cell;
     }
 
-    public bool DeleteCell (int id)
+    public bool Delete(int id)
     {
-        var cell = GetCellById(id);
+        var cell = GetById(id);
         if (cell == null)
         {
             return false;
         }
-        _cells.Remove(cell);
-        return true;
+        return _cells.Remove(cell);
     }
 
-    public bool UpdateCell(Cell updatedCell)
+    public bool Update(Cell updatedCell)
     {
-        var cell = GetCellById(updatedCell.Id);
+        var cell = GetById(updatedCell.Id);
         if (cell == null)
         {
             return false;
