@@ -30,6 +30,7 @@ public class QueryController(QueryService service) : ControllerBase
     /// <param name="date">Дата поставки.</param>
     /// <returns>Список продуктов, полученных на заданную дату.</returns>
     [HttpGet]
+    [Route("products-recived-on-date")]
     public ActionResult<IEnumerable<Product?>> GetProductsRecieveOnDate([FromQuery] string name, [FromQuery] DateTime date)
     {
         return Ok(service.GetProductsRecieveOnDate(name, date));

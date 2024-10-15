@@ -62,14 +62,15 @@ public class CellController(CellService service) : ControllerBase
     /// <summary>
     /// Обновляет информацию о существующей ячейке.
     /// </summary>
+    /// <param name="id">Идентификатор ячейки</param>
     /// <param name="newCell">Обновлённая информация о ячейке.</param>
     /// <returns>Результат операции.</returns>
     /// <response code="200">Ячейка успешно обновлена.</response>
     /// <response code="404">Ячейка с указанным идентификатором не найдена.</response>
     [HttpPut]
-    public ActionResult Put(CellDTO newCell)
+    public ActionResult Put(int id, CellCreateDTO newCell)
     {
-        var result = service.Update(newCell);
+        var result = service.Update(id, newCell);
         if (!result)
         {
             return NotFound();

@@ -62,14 +62,15 @@ public class ProductController(ProductService service) : ControllerBase
     /// <summary>
     /// Обновляет информацию о существующем продукте.
     /// </summary>
+    /// <param name="id">Идентификатор товара</param>
     /// <param name="newProduct">Обновлённая информация о продукте.</param>
     /// <returns>Результат операции обновления.</returns>
     /// <response code="200">Продукт успешно обновлён.</response>
     /// <response code="404">Продукт с указанным идентификатором не найден.</response>
     [HttpPut]
-    public ActionResult Put(ProductDTO newProduct)
+    public ActionResult Put(int id, ProductCreateDTO newProduct)
     {
-        var result = service.Update(newProduct);
+        var result = service.Update(id, newProduct);
         if (!result)
         {
             return NotFound();

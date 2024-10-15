@@ -62,14 +62,15 @@ public class OrganizationController(OrganizationService service) : ControllerBas
     /// <summary>
     /// Обновляет информацию о существующей организации.
     /// </summary>
+    /// <param name="id">Идентификатор организации</param>
     /// <param name="newOrganization">Обновлённая информация об организации.</param>
     /// <returns>Результат операции обновления.</returns>
     /// <response code="200">Организация успешно обновлена.</response>
     /// <response code="404">Организация с указанным идентификатором не найдена.</response>
     [HttpPut]
-    public ActionResult Put(OrganizationDTO newOrganization)
+    public ActionResult Put(int id, OrganizationCreateDTO newOrganization)
     {
-        var result = service.Update(newOrganization);
+        var result = service.Update(id, newOrganization);
         if (!result)
         {
             return NotFound();

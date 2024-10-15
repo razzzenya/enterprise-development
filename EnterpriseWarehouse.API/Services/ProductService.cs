@@ -3,7 +3,7 @@ using EnterpriseWarehouse.Domain.Entities;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class ProductService : IEntityService<Product, ProductCreateDTO, ProductDTO>
+public class ProductService : IEntityService<Product, ProductCreateDTO>
 {
     private readonly List<Product> _products = [];
 
@@ -36,9 +36,9 @@ public class ProductService : IEntityService<Product, ProductCreateDTO, ProductD
         return true;
     }
 
-    public bool Update(ProductDTO updatedProduct)
+    public bool Update(int id, ProductCreateDTO updatedProduct)
     {
-        var product = GetById(updatedProduct.Id);
+        var product = GetById(id);
         if (product == null)
         {
             return false;

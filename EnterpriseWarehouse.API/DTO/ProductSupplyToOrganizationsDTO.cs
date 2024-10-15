@@ -1,4 +1,5 @@
 ﻿namespace EnterpriseWarehouse.API.DTO;
+
 /// <summary>
 /// DTO описывающее количество товара поставленного организации
 /// </summary>

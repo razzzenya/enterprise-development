@@ -3,7 +3,7 @@ using EnterpriseWarehouse.Domain.Entities;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class CellService(ProductService productService) : IEntityService<Cell, CellCreateDTO, CellDTO>
+public class CellService(ProductService productService) : IEntityService<Cell, CellCreateDTO>
 {
     private readonly List<Cell> _cells = [];
 
@@ -40,14 +40,14 @@ public class CellService(ProductService productService) : IEntityService<Cell, C
         return _cells.Remove(cell);
     }
 
-    public bool Update(CellDTO updatedCell)
+    public bool Update(int id, CellCreateDTO updatedCell)
     {
-        var cell = GetById(updatedCell.Id);
+        var cell = GetById(id);
         if (cell == null)
         {
             return false;
         }
-        var product = productService.GetById(updatedCell.Id);
+        var product = productService.GetById(updatedCell.ProductId);
         if (product == null)
         {
             return false;

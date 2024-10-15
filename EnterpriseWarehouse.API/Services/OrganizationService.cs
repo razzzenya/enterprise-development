@@ -3,7 +3,7 @@ using EnterpriseWarehouse.Domain.Entities;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class OrganizationService : IEntityService<Organization, OrganizationCreateDTO, OrganizationDTO>
+public class OrganizationService : IEntityService<Organization, OrganizationCreateDTO>
 {
     private readonly List<Organization> _organizations = [];
 
@@ -36,9 +36,9 @@ public class OrganizationService : IEntityService<Organization, OrganizationCrea
         return true;
     }
 
-    public bool Update(OrganizationDTO updatedOrganization)
+    public bool Update(int id, OrganizationCreateDTO updatedOrganization)
     {
-        var organization = GetById(updatedOrganization.Id);
+        var organization = GetById(id);
         if (organization == null)
         {
             return false;

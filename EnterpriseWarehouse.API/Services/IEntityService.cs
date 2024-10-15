@@ -2,7 +2,7 @@
 /// <summary>
 ///  Интерфейс для сервисов сущностей
 /// </summary>
-public interface IEntityService<T, CreateDTO, DTO>
+public interface IEntityService<T, DTO>
 {
     /// <summary>
     /// Получение всех сущностей
@@ -17,7 +17,7 @@ public interface IEntityService<T, CreateDTO, DTO>
     /// <summary>
     /// Добавление сущности
     /// </summary>
-    bool Add(CreateDTO entity);
+    bool Add(DTO entity);
 
     /// <summary>
     /// Удаление сущности
@@ -27,5 +27,5 @@ public interface IEntityService<T, CreateDTO, DTO>
     /// <summary>
     /// Изменение сущности
     /// </summary>
-    bool Update(DTO updatedEntity);
+    bool Update(int id, DTO updatedEntity);
 }

@@ -3,7 +3,7 @@ using EnterpriseWarehouse.Domain.Entities;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class SupplyService(ProductService productService, OrganizationService organizationService) : IEntityService<Supply, SupplyCreateDTO, SupplyDTO>
+public class SupplyService(ProductService productService, OrganizationService organizationService) : IEntityService<Supply, SupplyCreateDTO>
 {
     private readonly List<Supply> _supplies = [];
 
@@ -44,9 +44,9 @@ public class SupplyService(ProductService productService, OrganizationService or
         return true;
     }
 
-    public bool Update(SupplyDTO updatedSupply)
+    public bool Update(int id, SupplyCreateDTO updatedSupply)
     {
-        var supply = GetById(updatedSupply.Id);
+        var supply = GetById(id);
         if (supply == null)
         {
             return false;

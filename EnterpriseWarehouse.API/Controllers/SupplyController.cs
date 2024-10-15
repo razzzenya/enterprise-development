@@ -62,14 +62,15 @@ public class SupplyController(SupplyService service) : ControllerBase
     /// <summary>
     /// Обновляет информацию о существующей поставке.
     /// </summary>
+    /// <param name="id">Идентификатор поставки</param>
     /// <param name="newSupply">Обновлённая информация о поставке.</param>
     /// <returns>Результат операции обновления.</returns>
     /// <response code="200">Поставка успешно обновлена.</response>
     /// <response code="404">Поставка с указанным идентификатором не найдена.</response>
     [HttpPut]
-    public ActionResult Put(SupplyDTO newSupply)
+    public ActionResult Put(int id, SupplyCreateDTO newSupply)
     {
-        var result = service.Update(newSupply);
+        var result = service.Update(id, newSupply);
         if (!result)
         {
             return NotFound();
