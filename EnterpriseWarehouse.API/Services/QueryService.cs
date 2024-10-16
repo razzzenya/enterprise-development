@@ -7,20 +7,19 @@ public class QueryService(CellService cellService, SupplyService supplyService)
 {
     public List<Product?> GetAllProductsSortedByName()
     {
-        var sortedProducts = cellService.GetAll()
+
+        return cellService.GetAll()
             .OrderBy(c => c.Product?.Name)
             .Select(c => c.Product)
             .ToList();
-        return sortedProducts;
     }
 
     public List<Product> GetProductsRecieveOnDate(string name, DateTime date)
     {
-        var products = supplyService.GetAll()
+        return supplyService.GetAll()
             .Where(s => s.Organization.Name == name && s.SupplyDate == date)
             .Select(s => s.Product)
             .ToList();
-        return products;
     }
 
     public List<Cell> GetCurrentWarehouseState()
@@ -39,6 +38,10 @@ public class QueryService(CellService cellService, SupplyService supplyService)
                 TotalQuantity = g.Sum(s => s.Quantity)
             })
             .ToList();
+        if (organizationsWithMaxSupply.Count == 0)
+        {
+            return [];
+        }
         var maxQuantity = organizationsWithMaxSupply.Max(o => o.TotalQuantity);
         var result = organizationsWithMaxSupply
             .Where(o => o.TotalQuantity == maxQuantity)
@@ -50,7 +53,7 @@ public class QueryService(CellService cellService, SupplyService supplyService)
 
     public List<ProductQuantityDTO> GetFiveMaxQuantityProducts()
     {
-        var products = cellService.GetAll()
+        return cellService.GetAll()
             .GroupBy(c => c.Product?.Name)
             .Select(g => new ProductQuantityDTO
             {
@@ -60,12 +63,11 @@ public class QueryService(CellService cellService, SupplyService supplyService)
             .OrderByDescending(p => p.Quantity)
             .Take(5)
             .ToList();
-        return products;
     }
 
     public List<ProductSupplyToOrganizationsDTO> GetQuantityProductSupplyToOrganiztions()
     {
-        var info = supplyService.GetAll()
+        return supplyService.GetAll()
             .GroupBy(p => new { ProductName = p.Product.Name, OrganizationName = p.Organization.Name })
             .Select(g => new ProductSupplyToOrganizationsDTO
             {
@@ -75,6 +77,5 @@ public class QueryService(CellService cellService, SupplyService supplyService)
             })
             .OrderByDescending(p => p.TotalQuantity)
             .ToList();
-        return info;
     }
 }
