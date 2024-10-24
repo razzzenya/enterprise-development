@@ -1,50 +1,38 @@
-﻿using EnterpriseWarehouse.API.DTO;
+﻿using AutoMapper;
+using EnterpriseWarehouse.API.DTO;
 using EnterpriseWarehouse.Domain.Entities;
+using EnterpriseWarehouse.Domain.Repositories;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class ProductService : IEntityService<Product, ProductCreateDTO>
+public class ProductService(ProductRepository repository, IMapper mapper) : IEntityService<ProductDTO, ProductCreateDTO>
 {
-    private readonly List<Product> _products = [];
+    public IEnumerable<ProductDTO> GetAll() => repository.GetAll().Select(mapper.Map<ProductDTO>);
 
-    private int _id = 1;
+    public ProductDTO? GetById(int id) => mapper.Map<ProductDTO>(repository.GetById(id));
 
-    public List<Product> GetAll() => _products;
-
-    public Product? GetById(int id) => _products.FirstOrDefault(o => o.Id == id);
-
-    public bool Add(ProductCreateDTO newProduct)
-    {
-        var product = new Product
-        {
-            Id = _id++,
-            Name = newProduct.Name,
-            Code = newProduct.Code,
-        };
-        _products.Add(product);
-        return true;
-    }
+    public ProductDTO Add(ProductCreateDTO newProduct) => mapper.Map<ProductDTO>(repository.Add(mapper.Map<Product>(newProduct)));
 
     public bool Delete(int id)
     {
-        var product = GetById(id);
+        var product = repository.GetById(id);
         if (product == null)
         {
             return false;
         }
-        _products.Remove(product);
+        repository.Delete(product);
         return true;
     }
 
-    public bool Update(int id, ProductCreateDTO updatedProduct)
+    public ProductDTO? Update(int id, ProductCreateDTO updatedProduct)
     {
-        var product = GetById(id);
+        var product = repository.GetById(id);
         if (product == null)
         {
-            return false;
+            return null;
         }
         product.Name = updatedProduct.Name;
         product.Code = updatedProduct.Code;
-        return true;
+        return mapper.Map<ProductDTO>(repository.Update(product));
     }
 }

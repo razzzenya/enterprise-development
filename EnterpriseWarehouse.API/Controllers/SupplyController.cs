@@ -1,6 +1,5 @@
 ﻿using EnterpriseWarehouse.API.DTO;
 using EnterpriseWarehouse.API.Services;
-using EnterpriseWarehouse.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnterpriseWarehouse.API.Controllers;
@@ -15,23 +14,23 @@ public class SupplyController(SupplyService service) : ControllerBase
     /// <summary>
     /// Возвращает список всех поставок.
     /// </summary>
-    /// <returns>Список всех поставок.</returns>
-    /// <response code="200">Список успешно возвращён.</response>
+    /// <returns>Коллекция объектов <see cref="SupplyDTO"/>.</returns>
+    /// <response code="200">Список поставок успешно возвращён.</response>
     [HttpGet]
-    public ActionResult<IEnumerable<Supply>> Get()
+    public ActionResult<IEnumerable<SupplyDTO>> Get()
     {
         return Ok(service.GetAll());
     }
 
     /// <summary>
-    /// Возвращает информацию о поставке по идентификатору.
+    /// Получает информацию о поставке по её идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор поставки.</param>
-    /// <returns>Поставка с указанным идентификатором.</returns>
-    /// <response code="200">Поставка найдена и возвращена успешно.</response>
+    /// <returns>Объект <see cref="SupplyDTO"/>, представляющий поставку.</returns>
+    /// <response code="200">Поставка найдена и информация успешно возвращена.</response>
     /// <response code="404">Поставка с указанным идентификатором не найдена.</response>
     [HttpGet("{id}")]
-    public ActionResult<Supply> Get(int id)
+    public ActionResult<SupplyDTO> Get(int id)
     {
         var supply = service.GetById(id);
         if (supply == null)
@@ -44,34 +43,34 @@ public class SupplyController(SupplyService service) : ControllerBase
     /// <summary>
     /// Добавляет новую поставку.
     /// </summary>
-    /// <param name="newSupply">Информация о новой поставке.</param>
-    /// <returns>Результат операции.</returns>
-    /// <response code="200">Поставка успешно добавлена.</response>
-    /// /// <response code="404">Поставка не была добавлена.</response>
+    /// <param name="newSupply">Объект <see cref="SupplyCreateDTO"/>, содержащий информацию о новой поставке.</param>
+    /// <returns>Объект <see cref="SupplyDTO"/>, представляющий добавленную поставку.</returns>
+    /// <response code="201">Поставка успешно добавлена.</response>
+    /// <response code="400">Ошибка при добавлении поставки.</response>
     [HttpPost]
-    public ActionResult<Supply> Post(SupplyCreateDTO newSupply)
+    public ActionResult<SupplyDTO> Post(SupplyCreateDTO newSupply)
     {
         var result = service.Add(newSupply);
-        if (!result)
+        if (result == null)
         {
-            return NotFound();
+            return BadRequest();
         }
-        return Ok();
+        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
     }
 
     /// <summary>
     /// Обновляет информацию о существующей поставке.
     /// </summary>
-    /// <param name="id">Идентификатор поставки</param>
-    /// <param name="newSupply">Обновлённая информация о поставке.</param>
-    /// <returns>Результат операции обновления.</returns>
+    /// <param name="id">Идентификатор поставки.</param>
+    /// <param name="newSupply">Объект <see cref="SupplyCreateDTO"/>, содержащий обновлённые данные поставки.</param>
+    /// <returns>Объект <see cref="SupplyDTO"/>, представляющий обновлённую поставку.</returns>
     /// <response code="200">Поставка успешно обновлена.</response>
     /// <response code="404">Поставка с указанным идентификатором не найдена.</response>
-    [HttpPut]
-    public ActionResult Put(int id, SupplyCreateDTO newSupply)
+    [HttpPut("{id}")]
+    public ActionResult<SupplyDTO> Put(int id, SupplyCreateDTO newSupply)
     {
         var result = service.Update(id, newSupply);
-        if (!result)
+        if (result == null)
         {
             return NotFound();
         }
@@ -79,13 +78,13 @@ public class SupplyController(SupplyService service) : ControllerBase
     }
 
     /// <summary>
-    /// Удаляет поставку по идентификатору.
+    /// Удаляет поставку по её идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор поставки.</param>
     /// <returns>Результат операции удаления.</returns>
     /// <response code="200">Поставка успешно удалена.</response>
     /// <response code="404">Поставка с указанным идентификатором не найдена.</response>
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {
         var result = service.Delete(id);

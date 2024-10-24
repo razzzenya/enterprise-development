@@ -1,37 +1,36 @@
 ﻿using EnterpriseWarehouse.API.DTO;
 using EnterpriseWarehouse.API.Services;
-using EnterpriseWarehouse.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnterpriseWarehouse.API.Controllers;
 
 /// <summary>
-/// Контроллер для управления продуктами.
+/// Контроллер для управления товарами.
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class ProductController(ProductService service) : ControllerBase
 {
     /// <summary>
-    /// Возвращает список всех продуктов.
+    /// Возвращает список всех товаров.
     /// </summary>
-    /// <returns>Список всех продуктов.</returns>
-    /// <response code="200">Список успешно возвращён.</response>
+    /// <returns>Коллекция объектов <see cref="ProductDTO"/>.</returns>
+    /// <response code="200">Список товаров успешно возвращён.</response>
     [HttpGet]
-    public ActionResult<IEnumerable<Product>> Get()
+    public ActionResult<IEnumerable<ProductDTO>> Get()
     {
         return Ok(service.GetAll());
     }
 
     /// <summary>
-    /// Возвращает информацию о продукте по идентификатору.
+    /// Возвращает информацию о товаре по его идентификатору.
     /// </summary>
-    /// <param name="id">Идентификатор продукта.</param>
-    /// <returns>Продукт с указанным идентификатором.</returns>
-    /// <response code="200">Продукт найден и возвращён успешно.</response>
-    /// <response code="404">Продукт с указанным идентификатором не найден.</response>
+    /// <param name="id">Идентификатор товара.</param>
+    /// <returns>Объект <see cref="ProductDTO"/>, представляющий товар.</returns>
+    /// <response code="200">Товар найден и информация успешно возвращена.</response>
+    /// <response code="404">Товар с указанным идентификатором не найден.</response>
     [HttpGet("{id}")]
-    public ActionResult<Product> Get(int id)
+    public ActionResult<ProductDTO> Get(int id)
     {
         var product = service.GetById(id);
         if (product == null)
@@ -42,50 +41,45 @@ public class ProductController(ProductService service) : ControllerBase
     }
 
     /// <summary>
-    /// Добавляет новый продукт.
+    /// Добавляет новый товар.
     /// </summary>
-    /// <param name="newProduct">Информация о новом продукте.</param>
-    /// <returns>Результат операции.</returns>
-    /// <response code="200">Продукт успешно добавлен.</response>
-    /// /// <response code="404">Продукт не был добавлен.</response>
+    /// <param name="newProduct">Объект <see cref="ProductCreateDTO"/>, содержащий информацию о новом товаре.</param>
+    /// <returns>Объект <see cref="ProductDTO"/>, представляющий добавленный товар.</returns>
+    /// <response code="201">Товар успешно добавлен.</response>
     [HttpPost]
-    public ActionResult Post(ProductCreateDTO newProduct)
+    public ActionResult<ProductDTO> Post(ProductCreateDTO newProduct)
     {
         var result = service.Add(newProduct);
-        if (!result)
-        {
-            return NotFound();
-        }
-        return Ok();
+        return CreatedAtAction(nameof(Get), new {id = result.Id}, result);
     }
 
     /// <summary>
-    /// Обновляет информацию о существующем продукте.
+    /// Обновляет информацию о существующем товаре.
     /// </summary>
-    /// <param name="id">Идентификатор товара</param>
-    /// <param name="newProduct">Обновлённая информация о продукте.</param>
-    /// <returns>Результат операции обновления.</returns>
-    /// <response code="200">Продукт успешно обновлён.</response>
-    /// <response code="404">Продукт с указанным идентификатором не найден.</response>
-    [HttpPut]
-    public ActionResult Put(int id, ProductCreateDTO newProduct)
+    /// <param name="id">Идентификатор товара.</param>
+    /// <param name="newProduct">Объект <see cref="ProductCreateDTO"/>, содержащий обновлённые данные товара.</param>
+    /// <returns>Объект <see cref="ProductDTO"/>, представляющий обновлённый товар.</returns>
+    /// <response code="200">Товар успешно обновлён.</response>
+    /// <response code="404">Товар с указанным идентификатором не найден.</response>
+    [HttpPut("{id}")]
+    public ActionResult<ProductDTO> Put(int id, ProductCreateDTO newProduct)
     {
         var result = service.Update(id, newProduct);
-        if (!result)
+        if (result == null)
         {
             return NotFound();
         }
-        return Ok();
+        return Ok(result);
     }
 
     /// <summary>
-    /// Удаляет продукт по идентификатору.
+    /// Удаляет товар по его идентификатору.
     /// </summary>
-    /// <param name="id">Идентификатор продукта.</param>
+    /// <param name="id">Идентификатор товара.</param>
     /// <returns>Результат операции удаления.</returns>
-    /// <response code="200">Продукт успешно удалён.</response>
-    /// <response code="404">Продукт с указанным идентификатором не найден.</response>
-    [HttpDelete]
+    /// <response code="200">Товар успешно удалён.</response>
+    /// <response code="404">Товар с указанным идентификатором не найден.</response>
+    [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {
         var result = service.Delete(id);

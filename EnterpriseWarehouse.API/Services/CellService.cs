@@ -1,59 +1,54 @@
-﻿using EnterpriseWarehouse.API.DTO;
+﻿using AutoMapper;
+using EnterpriseWarehouse.API.DTO;
 using EnterpriseWarehouse.Domain.Entities;
+using EnterpriseWarehouse.Domain.Repositories;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class CellService(ProductService productService) : IEntityService<Cell, CellCreateDTO>
+public class CellService(CellRepository cellRepository, ProductRepository productRepository, IMapper mapper) : IEntityService<CellDTO, CellCreateDTO>
 {
-    private readonly List<Cell> _cells = [];
+    public IEnumerable<CellDTO> GetAll() => cellRepository.GetAll().Select(mapper.Map<CellDTO>);
 
-    private int _id = 1;
-
-    public List<Cell> GetAll() => _cells;
-
-    public Cell? GetById(int id) => _cells.FirstOrDefault(o => o.Id == id);
-
-    public bool Add(CellCreateDTO newCell)
+    public CellDTO? GetById(int id) => mapper.Map<CellDTO>(cellRepository.GetById(id));
+    public CellDTO? Add(CellCreateDTO newCell)
     {
-        var product = productService.GetById(newCell.ProductId);
-        if (product == null) 
-        { 
-            return false;
+        var product = productRepository.GetById(newCell.ProductId);
+        if (product == null)
+        {
+            return null;
         }
         var cell = new Cell
         {
-            Id = _id++,
+            Product = product,
             Quantity = newCell.Quantity,
-            Product = product
         };
-        _cells.Add(cell);
+        return mapper.Map<CellDTO>(cellRepository.Add(cell));
+    }
+    public bool Delete(int id)
+    {
+        var cell = cellRepository.GetById(id);
+        if (cell == null)
+        {
+            return false;
+        }
+        cellRepository.Delete(cell);
         return true;
     }
 
-    public bool Delete(int id)
+    public CellDTO? Update(int id, CellCreateDTO updatedCell)
     {
-        var cell = GetById(id);
+        var cell = cellRepository.GetById(id);
         if (cell == null)
         {
-            return false;
+            return null;
         }
-        return _cells.Remove(cell);
-    }
-
-    public bool Update(int id, CellCreateDTO updatedCell)
-    {
-        var cell = GetById(id);
-        if (cell == null)
-        {
-            return false;
-        }
-        var product = productService.GetById(updatedCell.ProductId);
+        var product = productRepository.GetById(updatedCell.ProductId);
         if (product == null)
         {
-            return false;
+            return null;
         }
         cell.Product = product;
         cell.Quantity = updatedCell.Quantity;
-        return true;
+        return mapper.Map<CellDTO>(cellRepository.Update(cell));
     }
 }

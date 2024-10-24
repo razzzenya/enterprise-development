@@ -23,7 +23,7 @@ public class EnterpriseWarehouseTest(WarehouseFixture fixture) : IClassFixture<W
             _fixture.Products[7],
             _fixture.Products[1],
             _fixture.Products[11]
-        }; 
+        };
         var sortedProducts = _fixture.Cells
             .OrderBy(c => c.Product?.Name)
             .Select(c => c.Product)
@@ -40,7 +40,7 @@ public class EnterpriseWarehouseTest(WarehouseFixture fixture) : IClassFixture<W
             .Where(s => s.Organization.Name == name && s.SupplyDate == date)
             .Select(s => s.Product)
             .ToList();
-        Assert.Equal([ _fixture.Cells[3].Product ], products);
+        Assert.Equal([_fixture.Cells[3].Product], products);
     }
 
     [Fact]

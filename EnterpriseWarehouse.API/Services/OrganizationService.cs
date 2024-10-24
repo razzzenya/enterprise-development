@@ -1,50 +1,38 @@
-﻿using EnterpriseWarehouse.API.DTO;
+﻿using AutoMapper;
+using EnterpriseWarehouse.API.DTO;
+using EnterpriseWarehouse.API.Mapper;
 using EnterpriseWarehouse.Domain.Entities;
+using EnterpriseWarehouse.Domain.Repositories;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class OrganizationService : IEntityService<Organization, OrganizationCreateDTO>
+public class OrganizationService(OrganizationRepository repository, IMapper mapper) : IEntityService<OrganizationDTO, OrganizationCreateDTO>
 {
-    private readonly List<Organization> _organizations = [];
+    public IEnumerable<OrganizationDTO> GetAll() => repository.GetAll().Select(mapper.Map<OrganizationDTO>);
+    public OrganizationDTO? GetById(int id) => mapper.Map<OrganizationDTO>(repository.GetById(id));
 
-    private int _id = 1;
-
-    public List<Organization> GetAll() => _organizations;
-
-    public Organization? GetById(int id) =>_organizations.FirstOrDefault(o => o.Id == id);
-
-    public bool Add(OrganizationCreateDTO newOrganization)
-    {
-        var organization = new Organization
-        {
-            Id = _id++,
-            Name = newOrganization.Name,
-            Address = newOrganization.Address
-        };
-        _organizations.Add(organization);
-        return true;
-    }
+    public OrganizationDTO Add(OrganizationCreateDTO newProduct) => mapper.Map<OrganizationDTO>(repository.Add(mapper.Map<Organization>(newProduct)));
 
     public bool Delete(int id)
     {
-        var organization = GetById(id);
+        var organization = repository.GetById(id);
         if (organization == null)
         {
             return false;
         }
-        _organizations.Remove(organization);
+        repository.Delete(organization);
         return true;
     }
 
-    public bool Update(int id, OrganizationCreateDTO updatedOrganization)
+    public OrganizationDTO? Update(int id, OrganizationCreateDTO updatedOrganization)
     {
-        var organization = GetById(id);
+        var organization = repository.GetById(id);
         if (organization == null)
         {
-            return false;
+            return null;
         }
         organization.Address = updatedOrganization.Address;
         organization.Name = updatedOrganization.Name;
-        return true;
+        return mapper.Map<OrganizationDTO>(repository.Update(organization));
     }
 }

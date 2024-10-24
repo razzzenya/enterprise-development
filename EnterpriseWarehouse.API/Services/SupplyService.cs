@@ -1,66 +1,55 @@
-﻿using EnterpriseWarehouse.API.DTO;
+﻿using AutoMapper;
+using EnterpriseWarehouse.API.DTO;
 using EnterpriseWarehouse.Domain.Entities;
+using EnterpriseWarehouse.Domain.Repositories;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class SupplyService(ProductService productService, OrganizationService organizationService) : IEntityService<Supply, SupplyCreateDTO>
+public class SupplyService(SupplyRepository supplyRepository, OrganizationRepository organizationRepository, ProductRepository productRepository, IMapper mapper) : IEntityService<SupplyDTO, SupplyCreateDTO>
 {
-    private readonly List<Supply> _supplies = [];
+    public IEnumerable<SupplyDTO> GetAll() => supplyRepository.GetAll().Select(mapper.Map<SupplyDTO>);
 
-    private int _id = 1;
+    public SupplyDTO? GetById(int id) => mapper.Map<SupplyDTO>(supplyRepository.GetById(id));
 
-    public List<Supply> GetAll() => _supplies;
-
-    public Supply? GetById(int id) => _supplies.FirstOrDefault(o => o.Id == id);
-
-    public bool Add(SupplyCreateDTO newSupply)
+    public SupplyDTO? Add(SupplyCreateDTO newSupply)
     {
-        var organization = organizationService.GetById(newSupply.OrganizationId);
-        var product = productService.GetById(newSupply.ProductId);
+        var organization = organizationRepository.GetById(newSupply.OrganizationId);
+        var product = productRepository.GetById(newSupply.ProductId);
         if (organization == null || product == null)
         {
-            return false;
+            return null;
         }
-        var supply = new Supply
-        {
-            Id = _id++,
-            Organization = organization,
-            Product = product,
-            SupplyDate = newSupply.SupplyDate,
-            Quantity = newSupply.Quantity
-        };
-        _supplies.Add(supply);
-        return true;
+        return mapper.Map<SupplyDTO>(supplyRepository.Add(mapper.Map<Supply>(newSupply)));
     }
 
     public bool Delete(int id)
     {
-        var supply = GetById(id);
+        var supply = supplyRepository.GetById(id);
         if (supply == null)
         {
             return false;
         }
-        _supplies.Remove(supply);
+        supplyRepository.Delete(supply);
         return true;
     }
 
-    public bool Update(int id, SupplyCreateDTO updatedSupply)
+    public SupplyDTO? Update(int id, SupplyCreateDTO updatedSupply)
     {
-        var supply = GetById(id);
+        var supply = supplyRepository.GetById(id);
         if (supply == null)
         {
-            return false;
+            return null;
         }
-        var product = productService.GetById(updatedSupply.ProductId);
-        var organization = organizationService.GetById(updatedSupply.OrganizationId);
+        var product = productRepository.GetById(updatedSupply.ProductId);
+        var organization = organizationRepository.GetById(updatedSupply.OrganizationId);
         if (product == null || organization == null)
         {
-            return false;
+            return null;
         }
         supply.Product = product;
         supply.Organization = organization;
         supply.SupplyDate = updatedSupply.SupplyDate;
         supply.Quantity = updatedSupply.Quantity;
-        return true;
+        return mapper.Map<SupplyDTO>(supplyRepository.Update(supply));
     }
 }

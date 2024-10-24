@@ -1,6 +1,5 @@
 ﻿using EnterpriseWarehouse.API.DTO;
 using EnterpriseWarehouse.API.Services;
-using EnterpriseWarehouse.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnterpriseWarehouse.API.Controllers;
@@ -18,7 +17,7 @@ public class QueryController(QueryService service) : ControllerBase
     /// <returns>Список продуктов, отсортированных по названию.</returns>
     [HttpGet]
     [Route("sorted-products")]
-    public ActionResult<IEnumerable<Product?>> GetAllProductsSortedByName()
+    public ActionResult<IEnumerable<ProductDTO>> GetAllProductsSortedByName()
     {
         return Ok(service.GetAllProductsSortedByName());
     }
@@ -31,7 +30,7 @@ public class QueryController(QueryService service) : ControllerBase
     /// <returns>Список продуктов, полученных на заданную дату.</returns>
     [HttpGet]
     [Route("products-recived-on-date")]
-    public ActionResult<IEnumerable<Product?>> GetProductsRecieveOnDate([FromQuery] string name, [FromQuery] DateTime date)
+    public ActionResult<IEnumerable<ProductDTO>> GetProductsRecieveOnDate([FromQuery] string name, [FromQuery] DateTime date)
     {
         return Ok(service.GetProductsRecieveOnDate(name, date));
     }
@@ -42,7 +41,7 @@ public class QueryController(QueryService service) : ControllerBase
     /// <returns>Список всех ячеек на складе.</returns>
     [HttpGet]
     [Route("warehouse-state")]
-    public ActionResult<IEnumerable<Cell>> GetCurrentWarehouseState()
+    public ActionResult<IEnumerable<CellDTO>> GetCurrentWarehouseState()
     {
         return Ok(service.GetCurrentWarehouseState());
     }
@@ -55,7 +54,7 @@ public class QueryController(QueryService service) : ControllerBase
     /// <returns>Список организаций с максимальной поставкой.</returns>
     [HttpGet]
     [Route("max-supplies-organizations")]
-    public ActionResult<IEnumerable<Organization>> GetMaxSuppliesOrganizations([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+    public ActionResult<IEnumerable<OrganizationDTO>> GetMaxSuppliesOrganizations([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
     {
         return Ok(service.GetMaxSuppliesOrganizations(startDate, endDate));
     }

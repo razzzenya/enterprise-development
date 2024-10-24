@@ -1,6 +1,5 @@
 ﻿using EnterpriseWarehouse.API.DTO;
 using EnterpriseWarehouse.API.Services;
-using EnterpriseWarehouse.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnterpriseWarehouse.API.Controllers;
@@ -15,23 +14,23 @@ public class CellController(CellService service) : ControllerBase
     /// <summary>
     /// Возвращает список всех ячеек склада.
     /// </summary>
-    /// <returns>Список всех ячеек склада.</returns>
-    /// <response code="200">Список успешно возвращён.</response>
+    /// <returns>Коллекция объектов <see cref="CellDTO"/>.</returns>
+    /// <response code="200">Список ячеек успешно возвращён.</response>
     [HttpGet]
-    public ActionResult<IEnumerable<Cell>> Get()
+    public ActionResult<IEnumerable<CellDTO>> Get()
     {
         return Ok(service.GetAll());
     }
 
     /// <summary>
-    /// Получает информацию о ячейке склада по идентификатору.
+    /// Получает информацию о ячейке склада по её идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор ячейки.</param>
-    /// <returns>Ячейка склада с указанным идентификатором.</returns>
-    /// <response code="200">Ячейка найдена и возвращена успешно.</response>
+    /// <returns>Объект <see cref="CellDTO"/>, представляющий ячейку.</returns>
+    /// <response code="200">Ячейка найдена и информация успешно возвращена.</response>
     /// <response code="404">Ячейка с указанным идентификатором не найдена.</response>
     [HttpGet("{id}")]
-    public ActionResult<Cell> Get(int id)
+    public ActionResult<CellDTO> Get(int id)
     {
         var cell = service.GetById(id);
         if (cell == null)
@@ -44,48 +43,48 @@ public class CellController(CellService service) : ControllerBase
     /// <summary>
     /// Добавляет новую ячейку на склад.
     /// </summary>
-    /// <param name="newCell">Информация о новой ячейке.</param>
-    /// <returns>Результат операции.</returns>
-    /// <response code="200">Ячейка успешно добавлена.</response>
-    /// /// <response code="404">Ячейка не была добавлена.</response>
+    /// <param name="newCell">Объект <see cref="CellCreateDTO"/>, содержащий информацию о новой ячейке.</param>
+    /// <returns>Объект <see cref="CellDTO"/>, представляющий добавленную ячейку.</returns>
+    /// <response code="201">Ячейка успешно добавлена.</response>
+    /// <response code="400">Ошибка при добавлении ячейки.</response>
     [HttpPost]
-    public ActionResult Post(CellCreateDTO newCell)
+    public ActionResult<CellDTO> Post(CellCreateDTO newCell)
     {
         var result = service.Add(newCell);
-        if (!result)
+        if (result == null)
         {
-            return NotFound();
+            return BadRequest();
         }
-        return Ok();
+        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
     }
 
     /// <summary>
     /// Обновляет информацию о существующей ячейке.
     /// </summary>
-    /// <param name="id">Идентификатор ячейки</param>
-    /// <param name="newCell">Обновлённая информация о ячейке.</param>
-    /// <returns>Результат операции.</returns>
+    /// <param name="id">Идентификатор ячейки.</param>
+    /// <param name="newCell">Объект <see cref="CellCreateDTO"/>, содержащий обновлённые данные ячейки.</param>
+    /// <returns>Объект <see cref="CellDTO"/>, представляющий обновлённую ячейку.</returns>
     /// <response code="200">Ячейка успешно обновлена.</response>
     /// <response code="404">Ячейка с указанным идентификатором не найдена.</response>
-    [HttpPut]
-    public ActionResult Put(int id, CellCreateDTO newCell)
+    [HttpPut("{id}")]
+    public ActionResult<CellDTO> Put(int id, CellCreateDTO newCell)
     {
         var result = service.Update(id, newCell);
-        if (!result)
+        if (result == null)
         {
             return NotFound();
         }
-        return Ok();
+        return Ok(result);
     }
 
     /// <summary>
-    /// Удаляет ячейку склада по идентификатору.
+    /// Удаляет ячейку склада по её идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор ячейки.</param>
     /// <returns>Результат операции удаления.</returns>
     /// <response code="200">Ячейка успешно удалена.</response>
     /// <response code="404">Ячейка с указанным идентификатором не найдена.</response>
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {
         var result = service.Delete(id);

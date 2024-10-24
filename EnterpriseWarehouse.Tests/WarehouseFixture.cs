@@ -18,7 +18,7 @@ public class WarehouseFixture
         new() {Id = 9, Name = "GreenEnergy Corp", Address = "707 Cypress St, Fawcett City"}
     ];
 
-    public List<Product> Products = 
+    public List<Product> Products =
     [
         new() { Id = 0, Code = 1, Name = "Laptop" },
         new() { Id = 1, Code = 2, Name = "Tablet" },
