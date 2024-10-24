@@ -14,14 +14,34 @@ public class WarehouseContext(DbContextOptions<WarehouseContext> options) : DbCo
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Cell>()
-            .Navigation(c => c.Product)
-            .AutoInclude();
-        modelBuilder.Entity<Supply>()
-            .Navigation(s => s.Product)
-            .AutoInclude();
-        modelBuilder.Entity<Supply>()
-            .Navigation(s => s.Organization)
-            .AutoInclude();
+        modelBuilder.Entity<Cell>(entity =>
+        {
+            entity.HasOne(c => c.Product)
+                  .WithMany()
+                  .HasForeignKey("product")
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Navigation(c => c.Product)
+                  .AutoInclude();
+        });
+
+        modelBuilder.Entity<Supply>(entity =>
+        {
+            entity.HasOne(s => s.Product)
+                  .WithMany()
+                  .HasForeignKey("product")
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(s => s.Organization)
+                  .WithMany()
+                  .HasForeignKey("organization")
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Navigation(s => s.Product)
+                  .AutoInclude();
+
+            entity.Navigation(s => s.Organization)
+                  .AutoInclude();
+        });
     }
 }

@@ -10,6 +10,7 @@ public class CellService(CellRepository cellRepository, ProductRepository produc
     public IEnumerable<CellDTO> GetAll() => cellRepository.GetAll().Select(mapper.Map<CellDTO>);
 
     public CellDTO? GetById(int id) => mapper.Map<CellDTO>(cellRepository.GetById(id));
+
     public CellDTO? Add(CellCreateDTO newCell)
     {
         var product = productRepository.GetById(newCell.ProductId);

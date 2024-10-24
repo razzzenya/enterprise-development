@@ -21,6 +21,6 @@ public class MappingProfile : Profile
         CreateMap<CellDTO, Cell>();
 
         CreateMap<Supply, SupplyDTO>();
-        CreateMap<SupplyDTO, Supply>(); 
+        CreateMap<SupplyDTO, Supply>();
     }
 }

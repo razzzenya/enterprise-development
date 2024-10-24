@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using EnterpriseWarehouse.API.DTO;
-using EnterpriseWarehouse.API.Mapper;
 using EnterpriseWarehouse.Domain.Entities;
 using EnterpriseWarehouse.Domain.Repositories;
 

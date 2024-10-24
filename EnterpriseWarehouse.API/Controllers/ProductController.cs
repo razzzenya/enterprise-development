@@ -50,7 +50,7 @@ public class ProductController(ProductService service) : ControllerBase
     public ActionResult<ProductDTO> Post(ProductCreateDTO newProduct)
     {
         var result = service.Add(newProduct);
-        return CreatedAtAction(nameof(Get), new {id = result.Id}, result);
+        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
     }
 
     /// <summary>
