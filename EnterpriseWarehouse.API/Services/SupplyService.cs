@@ -19,7 +19,14 @@ public class SupplyService(SupplyRepository supplyRepository, OrganizationReposi
         {
             return null;
         }
-        return mapper.Map<SupplyDTO>(supplyRepository.Add(mapper.Map<Supply>(newSupply)));
+        var supply = new Supply
+        {
+            Organization = organization,
+            Product = product,
+            SupplyDate = newSupply.SupplyDate,
+            Quantity = newSupply.Quantity,
+        };
+        return mapper.Map<SupplyDTO>(supplyRepository.Add(supply));
     }
 
     public bool Delete(int id)
