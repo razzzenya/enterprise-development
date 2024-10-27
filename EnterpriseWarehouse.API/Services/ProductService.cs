@@ -5,7 +5,7 @@ using EnterpriseWarehouse.Domain.Repositories;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class ProductService(ProductRepository repository, IMapper mapper) : IEntityService<ProductDTO, ProductCreateDTO>
+public class ProductService(IEntityRepository<Product> repository, IMapper mapper) : IEntityService<ProductDTO, ProductCreateDTO>
 {
     public IEnumerable<ProductDTO> GetAll() => repository.GetAll().Select(mapper.Map<ProductDTO>);
 

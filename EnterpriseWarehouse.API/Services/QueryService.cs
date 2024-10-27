@@ -5,7 +5,7 @@ using EnterpriseWarehouse.Domain.Repositories;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class QueryService(CellRepository cellRepository, SupplyRepository supplyRepository, IMapper mapper) : IQueryService
+public class QueryService(IEntityRepository<Cell> cellRepository, IEntityRepository<Supply> supplyRepository, IMapper mapper) : IQueryService
 {
     public List<ProductDTO> GetAllProductsSortedByName()
     {

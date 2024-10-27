@@ -5,7 +5,7 @@ using EnterpriseWarehouse.Domain.Repositories;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class CellService(CellRepository cellRepository, ProductRepository productRepository, IMapper mapper) : IEntityService<CellDTO, CellCreateDTO>
+public class CellService(IEntityRepository<Cell> cellRepository, IEntityRepository<Product> productRepository, IMapper mapper) : IEntityService<CellDTO, CellCreateDTO>
 {
     public IEnumerable<CellDTO> GetAll() => cellRepository.GetAll().Select(mapper.Map<CellDTO>);
 

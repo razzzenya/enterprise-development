@@ -5,7 +5,7 @@ using EnterpriseWarehouse.Domain.Repositories;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class SupplyService(SupplyRepository supplyRepository, OrganizationRepository organizationRepository, ProductRepository productRepository, IMapper mapper) : IEntityService<SupplyDTO, SupplyCreateDTO>
+public class SupplyService(IEntityRepository<Supply> supplyRepository, IEntityRepository<Organization> organizationRepository, IEntityRepository<Product> productRepository, IMapper mapper) : IEntityService<SupplyDTO, SupplyCreateDTO>
 {
     public IEnumerable<SupplyDTO> GetAll() => supplyRepository.GetAll().Select(mapper.Map<SupplyDTO>);
 

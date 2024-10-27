@@ -5,7 +5,7 @@ using EnterpriseWarehouse.Domain.Repositories;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class OrganizationService(OrganizationRepository repository, IMapper mapper) : IEntityService<OrganizationDTO, OrganizationCreateDTO>
+public class OrganizationService(IEntityRepository<Organization> repository, IMapper mapper) : IEntityService<OrganizationDTO, OrganizationCreateDTO>
 {
     public IEnumerable<OrganizationDTO> GetAll() => repository.GetAll().Select(mapper.Map<OrganizationDTO>);
     public OrganizationDTO? GetById(int id) => mapper.Map<OrganizationDTO>(repository.GetById(id));

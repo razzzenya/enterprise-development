@@ -21,15 +21,10 @@ builder.Services.AddDbContext<WarehouseContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
     new MySqlServerVersion(new Version(8, 0, 39))));
 
-//builder.Services.AddScoped<IEntityRepository<Organization>, OrganizationRepository>();
-//builder.Services.AddScoped<IEntityRepository<Product>, ProductRepository>();
-//builder.Services.AddScoped<IEntityRepository<Cell>, CellRepository>();
-//builder.Services.AddScoped<IEntityRepository<Supply>, SupplyRepository>();
-
-builder.Services.AddScoped<OrganizationRepository>();
-builder.Services.AddScoped<ProductRepository>();
-builder.Services.AddScoped<CellRepository>();
-builder.Services.AddScoped<SupplyRepository>();
+builder.Services.AddScoped<IEntityRepository<Organization>, OrganizationRepository>();
+builder.Services.AddScoped<IEntityRepository<Product>, ProductRepository>();
+builder.Services.AddScoped<IEntityRepository<Cell>, CellRepository>();
+builder.Services.AddScoped<IEntityRepository<Supply>, SupplyRepository>();
 
 builder.Services.AddScoped<IEntityService<OrganizationDTO, OrganizationCreateDTO>, OrganizationService>();
 builder.Services.AddScoped<IEntityService<ProductDTO, ProductCreateDTO>, ProductService>();
