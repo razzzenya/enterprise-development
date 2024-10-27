@@ -6,9 +6,18 @@ namespace EnterpriseWarehouse.Domain.Repositories;
 
 public class CellRepository(WarehouseContext context) : IEntityRepository<Cell>
 {
-    public IEnumerable<Cell> GetAll() => context.Cells;
+    public IEnumerable<Cell> GetAll()
+    {
+        return context.Cells
+             .Include(s => s.Product);
+    }
 
-    public Cell? GetById(int id) => context.Cells.Find(id);
+    public Cell? GetById(int id)
+    {
+        return context.Cells
+            .Include(c => c.Product)
+            .FirstOrDefault(c => c.Id == id);
+    }
 
     public Cell Add(Cell newCell)
     {

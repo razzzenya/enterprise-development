@@ -21,8 +21,7 @@ public class WarehouseContext(DbContextOptions<WarehouseContext> options) : DbCo
                   .HasForeignKey("product")
                   .OnDelete(DeleteBehavior.Cascade);
 
-            entity.Navigation(c => c.Product)
-                  .AutoInclude();
+            entity.Navigation(c => c.Product);
         });
 
         modelBuilder.Entity<Supply>(entity =>
@@ -37,11 +36,9 @@ public class WarehouseContext(DbContextOptions<WarehouseContext> options) : DbCo
                   .HasForeignKey("organization")
                   .OnDelete(DeleteBehavior.Cascade);
 
-            entity.Navigation(s => s.Product)
-                  .AutoInclude();
+            entity.Navigation(s => s.Product);
 
-            entity.Navigation(s => s.Organization)
-                  .AutoInclude();
+            entity.Navigation(s => s.Organization);
         });
     }
 }

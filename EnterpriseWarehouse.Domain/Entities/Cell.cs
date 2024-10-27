@@ -5,7 +5,7 @@ namespace EnterpriseWarehouse.Domain.Entities;
 /// <summary>
 /// Ячейка склада
 /// </summary>
-[Table("Cell")]
+[Table("cell")]
 public class Cell
 {
     /// <summary>

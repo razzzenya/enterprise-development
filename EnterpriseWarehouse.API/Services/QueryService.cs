@@ -4,7 +4,7 @@ using EnterpriseWarehouse.Domain.Repositories;
 
 namespace EnterpriseWarehouse.API.Services;
 
-public class QueryService(CellRepository cellRepository, SupplyRepository supplyRepository, IMapper mapper)
+public class QueryService(CellRepository cellRepository, SupplyRepository supplyRepository, IMapper mapper) : IQueryService
 {
     public List<ProductDTO> GetAllProductsSortedByName()
     {
@@ -17,16 +17,14 @@ public class QueryService(CellRepository cellRepository, SupplyRepository supply
     public List<ProductDTO> GetProductsRecieveOnDate(string name, DateTime date)
     {
         return supplyRepository.GetAll()
-            .Where(s => s.Organization.Name == name && s.SupplyDate == date)
+            .Where(s => s.Organization.Name == name && s.SupplyDate == date.Date)
             .Select(s => mapper.Map<ProductDTO>(s.Product))
             .ToList();
     }
 
     public List<CellDTO> GetCurrentWarehouseState()
     {
-        return cellRepository.GetAll()
-            .Select(c => mapper.Map<CellDTO>(c))
-            .ToList();
+        return mapper.Map<List<CellDTO>>(cellRepository.GetAll());
     }
 
     public List<OrganizationDTO> GetMaxSuppliesOrganizations(DateTime startDate, DateTime endDate)

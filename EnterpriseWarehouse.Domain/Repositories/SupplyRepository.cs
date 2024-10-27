@@ -6,9 +6,20 @@ namespace EnterpriseWarehouse.Domain.Repositories;
 
 public class SupplyRepository(WarehouseContext context) : IEntityRepository<Supply>
 {
-    public IEnumerable<Supply> GetAll() => context.Supplies;
+    public IEnumerable<Supply> GetAll()
+    {
+        return context.Supplies
+            .Include(s => s.Product)
+            .Include(s => s.Organization);
+    }
 
-    public Supply? GetById(int id) => context.Supplies.Find(id);
+    public Supply? GetById(int id)
+    {
+        return context.Supplies
+            .Include(s => s.Product)
+            .Include(s => s.Organization)
+            .FirstOrDefault(s => s.Id == id);
+    }
 
     public Supply Add(Supply newSupply)
     {

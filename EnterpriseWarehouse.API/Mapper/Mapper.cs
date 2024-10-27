@@ -7,20 +7,14 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Organization, OrganizationDTO>();
-        CreateMap<OrganizationDTO, Organization>();
-        CreateMap<Organization, OrganizationCreateDTO>();
-        CreateMap<OrganizationCreateDTO, Organization>();
+        CreateMap<Organization, OrganizationDTO>().ReverseMap();
+        CreateMap<Organization, OrganizationCreateDTO>().ReverseMap();
 
-        CreateMap<Product, ProductDTO>();
-        CreateMap<ProductDTO, Product>();
-        CreateMap<Product, ProductCreateDTO>();
-        CreateMap<ProductCreateDTO, Product>();
+        CreateMap<Product, ProductDTO>().ReverseMap();
+        CreateMap<Product, ProductCreateDTO>().ReverseMap();
 
-        CreateMap<Cell, CellDTO>();
-        CreateMap<CellDTO, Cell>();
+        CreateMap<Cell, CellDTO>().ReverseMap();
 
-        CreateMap<Supply, SupplyDTO>();
-        CreateMap<SupplyDTO, Supply>();
+        CreateMap<Supply, SupplyDTO>().ReverseMap();
     }
 }
