@@ -9,7 +9,7 @@ namespace EnterpriseWarehouse.API.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
-public class SupplyController(SupplyService service) : ControllerBase
+public class SupplyController(IEntityService<SupplyDTO, SupplyCreateDTO> service) : ControllerBase
 {
     /// <summary>
     /// Возвращает список всех поставок.

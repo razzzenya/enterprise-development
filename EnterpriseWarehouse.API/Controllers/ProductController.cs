@@ -9,7 +9,7 @@ namespace EnterpriseWarehouse.API.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
-public class ProductController(ProductService service) : ControllerBase
+public class ProductController(IEntityService<ProductDTO, ProductCreateDTO> service) : ControllerBase
 {
     /// <summary>
     /// Возвращает список всех товаров.

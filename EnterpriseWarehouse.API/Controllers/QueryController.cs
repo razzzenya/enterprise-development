@@ -9,7 +9,7 @@ namespace EnterpriseWarehouse.API.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
-public class QueryController(QueryService service) : ControllerBase
+public class QueryController(IQueryService service) : ControllerBase
 {
     /// <summary>
     /// Получает список всех продуктов, отсортированных по названию.

@@ -9,7 +9,7 @@ namespace EnterpriseWarehouse.API.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
-public class CellController(CellService service) : ControllerBase
+public class CellController(IEntityService<CellDTO, CellCreateDTO> service) : ControllerBase
 {
     /// <summary>
     /// Возвращает список всех ячеек склада.

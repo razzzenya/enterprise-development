@@ -9,7 +9,7 @@ namespace EnterpriseWarehouse.API.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
-public class OrganizationController(OrganizationService service) : ControllerBase
+public class OrganizationController(IEntityService<OrganizationDTO, OrganizationCreateDTO> service) : ControllerBase
 {
     /// <summary>
     /// Возвращает список всех организаций.
