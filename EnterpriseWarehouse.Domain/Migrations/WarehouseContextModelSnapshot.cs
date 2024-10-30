@@ -41,7 +41,7 @@ namespace EnterpriseWarehouse.Domain.Migrations
 
                     b.HasIndex("product");
 
-                    b.ToTable("Cell");
+                    b.ToTable("cell");
                 });
 
             modelBuilder.Entity("EnterpriseWarehouse.Domain.Entities.Organization", b =>

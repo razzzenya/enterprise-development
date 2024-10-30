@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EnterpriseWarehouse.Domain.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,20 +49,20 @@ namespace EnterpriseWarehouse.Domain.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Cell",
+                name: "cell",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    product = table.Column<int>(type: "int", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cell", x => x.Id);
+                    table.PrimaryKey("PK_cell", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cell_product_ProductId",
-                        column: x => x.ProductId,
+                        name: "FK_cell_product_product",
+                        column: x => x.product,
                         principalTable: "product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -74,8 +75,8 @@ namespace EnterpriseWarehouse.Domain.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    OrganizationId = table.Column<int>(type: "int", nullable: false),
+                    product = table.Column<int>(type: "int", nullable: false),
+                    organization = table.Column<int>(type: "int", nullable: false),
                     supply_date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false)
                 },
@@ -83,14 +84,14 @@ namespace EnterpriseWarehouse.Domain.Migrations
                 {
                     table.PrimaryKey("PK_supply", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_supply_organization_OrganizationId",
-                        column: x => x.OrganizationId,
+                        name: "FK_supply_organization_organization",
+                        column: x => x.organization,
                         principalTable: "organization",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_supply_product_ProductId",
-                        column: x => x.ProductId,
+                        name: "FK_supply_product_product",
+                        column: x => x.product,
                         principalTable: "product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -98,26 +99,26 @@ namespace EnterpriseWarehouse.Domain.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cell_ProductId",
-                table: "Cell",
-                column: "ProductId");
+                name: "IX_cell_product",
+                table: "cell",
+                column: "product");
 
             migrationBuilder.CreateIndex(
-                name: "IX_supply_OrganizationId",
+                name: "IX_supply_organization",
                 table: "supply",
-                column: "OrganizationId");
+                column: "organization");
 
             migrationBuilder.CreateIndex(
-                name: "IX_supply_ProductId",
+                name: "IX_supply_product",
                 table: "supply",
-                column: "ProductId");
+                column: "product");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Cell");
+                name: "cell");
 
             migrationBuilder.DropTable(
                 name: "supply");

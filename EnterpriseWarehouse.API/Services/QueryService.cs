@@ -18,7 +18,7 @@ public class QueryService(IEntityRepository<Cell> cellRepository, IEntityReposit
     public List<ProductDTO> GetProductsRecieveOnDate(string name, DateTime date)
     {
         return supplyRepository.GetAll()
-            .Where(s => s.Organization.Name == name && s.SupplyDate == date.Date)
+            .Where(s => s.Organization.Name == name && s.SupplyDate.Date == date.Date)
             .Select(s => mapper.Map<ProductDTO>(s.Product))
             .ToList();
     }

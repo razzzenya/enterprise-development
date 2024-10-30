@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EnterpriseWarehouse.Domain.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    [Migration("20241024181422_FixProductMappingWithAutoInclude")]
-    partial class FixProductMappingWithAutoInclude
+    [Migration("20241030095520_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,7 +44,7 @@ namespace EnterpriseWarehouse.Domain.Migrations
 
                     b.HasIndex("product");
 
-                    b.ToTable("Cell");
+                    b.ToTable("cell");
                 });
 
             modelBuilder.Entity("EnterpriseWarehouse.Domain.Entities.Organization", b =>
