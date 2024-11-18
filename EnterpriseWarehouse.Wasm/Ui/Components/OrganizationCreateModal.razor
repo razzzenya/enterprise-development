@@ -1,0 +1,47 @@
+﻿@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
+
+<Modal @ref="OrganizationModal">
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>Новая организация</ModalTitle>
+                <CloseButton Clicked="CloseOrganizationModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Название</FieldLabel>
+                    <TextEdit @bind-Text="NewOrganization.Name" />
+                </Field>
+                <Field>
+                    <FieldLabel>Адрес</FieldLabel>
+                    <TextEdit @bind-Text="@NewOrganization.Address" />
+                </Field>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="CloseOrganizationModalAsync">Отмена</Button>
+                <Button Color="Color.Primary" Clicked="CreateOrganizationAsync">Создать</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public EventCallback OnOrganizationAdded { get; set; }
+
+    private Modal OrganizationModal { get; set; } = new();
+    private OrganizationCreateDTO NewOrganization{ get; set; } = new();
+
+    public async Task Show() => await OrganizationModal.Show();
+
+    private async Task CloseOrganizationModalAsync() => await OrganizationModal.Hide();
+
+    private async Task CreateOrganizationAsync()
+    {
+        await EnterpriseWarehouseApi.CreateOrganization(NewOrganization);
+        await OrganizationModal.Hide();
+        await OnOrganizationAdded.InvokeAsync();
+    }
+}

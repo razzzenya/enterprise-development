@@ -11,11 +11,11 @@
             <ModalBody>
                 <Field>
                     <FieldLabel>Код товара</FieldLabel>
-                    <InputNumber @bind-Value="SelectedProduct.Code" />
+                    <InputNumber @bind-Value="NewProduct.Code" />
                 </Field>
                 <Field>
                     <FieldLabel>Название</FieldLabel>
-                    <TextEdit @bind-Text="@SelectedProduct.Name" />
+                    <TextEdit @bind-Text="@NewProduct.Name" />
                 </Field>
             </ModalBody>
 
@@ -32,7 +32,7 @@
     public EventCallback OnProductAdded { get; set; }
 
     private Modal ProductModal { get; set; } = new();
-    private ProductCreateDTO SelectedProduct { get; set; } = new();
+    private ProductCreateDTO NewProduct { get; set; } = new();
 
     public async Task Show() => await ProductModal.Show();
 
@@ -40,7 +40,7 @@
 
     private async Task CreateProductAsync()
     {
-        await EnterpriseWarehouseApi.CreateProduct(SelectedProduct);
+        await EnterpriseWarehouseApi.CreateProduct(NewProduct);
         await ProductModal.Hide();
         await OnProductAdded.InvokeAsync();
     }

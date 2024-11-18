@@ -4,7 +4,7 @@
     <CardHeader>
         <Row Class="justify-content-between">
             <Column ColumnSize="ColumnSize.IsAuto">
-                <h4>Товары</h4>
+                <h4>Организации</h4>
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
                 <Button Color="Color.Primary" Clicked="OpenCreateModal">
@@ -14,14 +14,14 @@
         </Row>
     </CardHeader>
     <CardBody>
-        <DataGrid TItem="ProductDTO"
-                  Data="Products"
+        <DataGrid TItem="OrganizationDTO"
+                  Data="Organizations"
                   Responsive
                   Striped>
             <DataGridColumns>
                 <DataGridColumn Width="150px"
-                                TItem="ProductDTO"
-                                Field="@nameof(ProductDTO.Id)"
+                                TItem="OrganizationDTO"
+                                Field="@nameof(OrganizationDTO.Id)"
                                 Caption="Действия">
                     <DisplayTemplate>
                         <Dropdown>
@@ -32,19 +32,19 @@
                                 <DropdownItem Clicked="() => OpenEditPageAsync(context)">
                                     Редактировать
                                 </DropdownItem>
-                                <DropdownItem Clicked="() => DeleteProductAsync(context)">
+                                <DropdownItem Clicked="() => DeleteOrganizationAsync(context)">
                                     Удалить
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </DisplayTemplate>
                 </DataGridColumn>
-                <DataGridColumn TItem="ProductDTO"
-                                Field="@nameof(ProductDTO.Code)"
+                <DataGridColumn TItem="OrganizationDTO"
+                                Field="@nameof(OrganizationDTO.Name)"
                                 Caption="Код товара">
                 </DataGridColumn>
-                <DataGridColumn TItem="ProductDTO"
-                                Field="@nameof(ProductDTO.Name)"
+                <DataGridColumn TItem="OrganizationDTO"
+                                Field="@nameof(OrganizationDTO.Address)"
                                 Caption="Название">
                 </DataGridColumn>
             </DataGridColumns>
@@ -52,8 +52,8 @@
     </CardBody>
 </Card>
 
-<ProductCreateModal @ref="ProductCreateModal" OnProductAdded="@HandleProductListChanged" />
-<ProductUpdateModal @ref="ProductUpdateModal" ProductToUpdate="SelectedProduct" Id="SelectedId" OnProductUpdated="@HandleProductListChanged" />
+<OrganizationCreateModal @ref="OrganizationCreateModal" OnOrganizationAdded="@HandleOrganizationListChanged" />
+<OrganizationUpdateModal @ref="OrganizationUpdateModal" OrganizationToUpdate="SelectedOrganization" Id="SelectedId" OnOrganizationUpdated="@HandleOrganizationListChanged" />
 
 
 @code {
@@ -62,44 +62,44 @@
     [Parameter]
     public EventCallback OnDataChanged { get; set; }
 
-    private IEnumerable<ProductDTO> Products { get; set; } = [];
+    private IEnumerable<OrganizationDTO> Organizations { get; set; } = [];
     private int SelectedId { get; set; }
-    private ProductCreateDTO? SelectedProduct { get; set; }
-    private ProductCreateModal ProductCreateModal { get; set; } = new();
-    private ProductUpdateModal ProductUpdateModal { get; set; } = new();
+    private OrganizationCreateDTO? SelectedOrganization { get; set; }
+    private OrganizationCreateModal OrganizationCreateModal { get; set; } = new();
+    private OrganizationUpdateModal OrganizationUpdateModal { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        await RefreshProductsCollection();
+        await RefreshOrganizationCollection();
         await base.OnInitializedAsync();
     }
 
-    private async Task OpenEditPageAsync(ProductDTO context)
+    private async Task OpenEditPageAsync(OrganizationDTO context)
     {
         SelectedId = context.Id;
-        SelectedProduct = new()
-        {
-            Code = context.Code,
-            Name = context.Name
-        };
-        await ProductUpdateModal.Show();
+        SelectedOrganization = new()
+            {
+                Name = context.Name,
+                Address = context.Address
+            };
+        await OrganizationUpdateModal.Show();
     }
 
-    private async Task DeleteProductAsync(ProductDTO context)
+    private async Task DeleteOrganizationAsync(OrganizationDTO context)
     {
-        await EnterpriseWarehouseApi.DeleteProduct(context.Id);
-        await RefreshProductsCollection();
+        await EnterpriseWarehouseApi.DeleteOrganization(context.Id);
+        await RefreshOrganizationCollection();
         await OnDataChanged.InvokeAsync();
     }
 
-    private async Task HandleProductListChanged()
+    private async Task HandleOrganizationListChanged()
     {
-        await RefreshProductsCollection();
+        await RefreshOrganizationCollection();
         await OnDataChanged.InvokeAsync();
     }
 
-    private async Task OpenCreateModal() => await ProductCreateModal.Show();
+    private async Task OpenCreateModal() => await OrganizationCreateModal.Show();
 
 
-    private async Task RefreshProductsCollection() => Products = await EnterpriseWarehouseApi.GetAllProducts();
+    private async Task RefreshOrganizationCollection() => Organizations = await EnterpriseWarehouseApi.GetAllOrganizations();
 }
