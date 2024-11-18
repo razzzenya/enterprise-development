@@ -32,6 +32,8 @@ builder.Services.AddScoped<IEntityService<CellDTO, CellCreateDTO>, CellService>(
 builder.Services.AddScoped<IEntityService<SupplyDTO, SupplyCreateDTO>, SupplyService>();
 builder.Services.AddScoped<IQueryService, QueryService>();
 
+builder.Services.AddCors(options => options.AddDefaultPolicy(policy => { policy.AllowAnyOrigin(); policy.AllowAnyMethod(); policy.AllowAnyHeader(); }));
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -41,6 +43,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors();
 app.MapControllers();
 app.Run();

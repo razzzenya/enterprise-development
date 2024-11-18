@@ -45,12 +45,12 @@ public class OrganizationController(IEntityService<OrganizationDTO, Organization
     /// </summary>
     /// <param name="newOrganization">Объект <see cref="OrganizationCreateDTO"/>, содержащий данные новой организации.</param>
     /// <returns>Объект <see cref="OrganizationDTO"/>, представляющий добавленную организацию.</returns>
-    /// <response code="201">Организация успешно добавлена.</response>
+    /// <response code="200">Организация успешно добавлена.</response>
     [HttpPost]
     public ActionResult<OrganizationDTO> Post(OrganizationCreateDTO newOrganization)
     {
         var result = service.Add(newOrganization);
-        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
+        return Ok(result);
     }
 
     /// <summary>

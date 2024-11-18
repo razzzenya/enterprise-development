@@ -45,12 +45,12 @@ public class ProductController(IEntityService<ProductDTO, ProductCreateDTO> serv
     /// </summary>
     /// <param name="newProduct">Объект <see cref="ProductCreateDTO"/>, содержащий информацию о новом товаре.</param>
     /// <returns>Объект <see cref="ProductDTO"/>, представляющий добавленный товар.</returns>
-    /// <response code="201">Товар успешно добавлен.</response>
+    /// <response code="200">Товар успешно добавлен.</response>
     [HttpPost]
     public ActionResult<ProductDTO> Post(ProductCreateDTO newProduct)
     {
         var result = service.Add(newProduct);
-        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
+        return Ok(result);
     }
 
     /// <summary>

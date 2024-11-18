@@ -45,7 +45,7 @@ public class CellController(IEntityService<CellDTO, CellCreateDTO> service) : Co
     /// </summary>
     /// <param name="newCell">Объект <see cref="CellCreateDTO"/>, содержащий информацию о новой ячейке.</param>
     /// <returns>Объект <see cref="CellDTO"/>, представляющий добавленную ячейку.</returns>
-    /// <response code="201">Ячейка успешно добавлена.</response>
+    /// <response code="200">Ячейка успешно добавлена.</response>
     /// <response code="400">Ошибка при добавлении ячейки.</response>
     [HttpPost]
     public ActionResult<CellDTO> Post(CellCreateDTO newCell)
@@ -55,7 +55,7 @@ public class CellController(IEntityService<CellDTO, CellCreateDTO> service) : Co
         {
             return BadRequest();
         }
-        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
+        return Ok(result);
     }
 
     /// <summary>

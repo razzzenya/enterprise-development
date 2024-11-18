@@ -1,0 +1,108 @@
+﻿@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
+@inject NavigationManager NavManager
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Товары</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary" Clicked="OpenCreateModal">
+                    Создать
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="ProductDTO"
+                  Data="Products"
+                  Responsive
+                  Striped>
+            <DataGridColumns>
+                <DataGridColumn Width="150px"
+                                TItem="ProductDTO"
+                                Field="@nameof(ProductDTO.Id)"
+                                Caption="Действия">
+                    <DisplayTemplate>
+                        <Dropdown>
+                            <DropdownToggle Color="Color.Primary">
+                                Действия
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem Clicked="() => OpenEditPageAsync(context)">
+                                    Редактировать
+                                </DropdownItem>
+                                <DropdownItem Clicked="() => DeleteProductAsync(context)">
+                                    Удалить
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductDTO"
+                                Field="@nameof(ProductDTO.Code)"
+                                Caption="Код товара">
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductDTO"
+                                Field="@nameof(ProductDTO.Name)"
+                                Caption="Название">
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+<ProductCreateModal @ref="ProductCreateModal" OnProductAdded="@HandleProductListChanged" />
+<ProductUpdateModal @ref="ProductUpdateModal" ProductToUpdate="SelectedProduct" Id="SelectedId" OnProductUpdated="@HandleProductListChanged" />
+
+
+@code {
+    [Parameter]
+    public bool IsNested { get; set; }
+    [Parameter]
+    public int? BookId { get; set; }
+    [Parameter]
+    public EventCallback OnDataChanged { get; set; }
+
+    private IEnumerable<ProductDTO> Products { get; set; } = [];
+    private int SelectedId { get; set; }
+    private ProductCreateDTO? SelectedProduct { get; set; }
+    private ProductCreateModal ProductCreateModal { get; set; } = new();
+    private ProductUpdateModal ProductUpdateModal { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshProductsCollection();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task OpenEditPageAsync(ProductDTO context)
+    {
+        SelectedId = context.Id;
+        SelectedProduct = new()
+        {
+            Code = context.Code,
+            Name = context.Name
+        };
+        await ProductUpdateModal.Show();
+    }
+
+    private async Task DeleteProductAsync(ProductDTO context)
+    {
+        await EnterpriseWarehouseApi.DeleteProduct(context.Id);
+        await RefreshProductsCollection();
+        await OnDataChanged.InvokeAsync();
+    }
+
+    private async Task HandleProductListChanged()
+    {
+        await RefreshProductsCollection();
+        await OnDataChanged.InvokeAsync();
+    }
+
+    private async Task OpenCreateModal() => await ProductCreateModal.Show();
+
+
+    private async Task RefreshProductsCollection() => Products = await EnterpriseWarehouseApi.GetAllProducts();
+}

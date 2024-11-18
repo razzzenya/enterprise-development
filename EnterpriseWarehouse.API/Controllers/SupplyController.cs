@@ -45,7 +45,7 @@ public class SupplyController(IEntityService<SupplyDTO, SupplyCreateDTO> service
     /// </summary>
     /// <param name="newSupply">Объект <see cref="SupplyCreateDTO"/>, содержащий информацию о новой поставке.</param>
     /// <returns>Объект <see cref="SupplyDTO"/>, представляющий добавленную поставку.</returns>
-    /// <response code="201">Поставка успешно добавлена.</response>
+    /// <response code="200">Поставка успешно добавлена.</response>
     /// <response code="400">Ошибка при добавлении поставки.</response>
     [HttpPost]
     public ActionResult<SupplyDTO> Post(SupplyCreateDTO newSupply)
@@ -55,7 +55,7 @@ public class SupplyController(IEntityService<SupplyDTO, SupplyCreateDTO> service
         {
             return BadRequest();
         }
-        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
+        return Ok(result);
     }
 
     /// <summary>
