@@ -1,10 +1,10 @@
+using Blazorise;
+using Blazorise.Bootstrap5;
+using Blazorise.Icons.FontAwesome;
 using EnterpriseWarehouse.Wasm;
 using EnterpriseWarehouse.Wasm.Api;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Blazorise;
-using Blazorise.Bootstrap5;
-using Blazorise.Icons.FontAwesome;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

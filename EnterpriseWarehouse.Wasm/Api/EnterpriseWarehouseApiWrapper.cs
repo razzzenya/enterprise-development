@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-
-namespace EnterpriseWarehouse.Wasm.Api;
+﻿namespace EnterpriseWarehouse.Wasm.Api;
 
 public class EnterpriseWarehouseApiWrapper(IConfiguration configuration) : IEnterpriseWarehouseApiWrapper
 {
