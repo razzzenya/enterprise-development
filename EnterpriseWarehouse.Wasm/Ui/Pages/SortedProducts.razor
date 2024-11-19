@@ -1,0 +1,48 @@
+﻿@page "/sorted-products"
+@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Товары отсортированные по названию</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="ProductDTO"
+                  Data="Products"
+                  Responsive
+                  Striped>
+            <DataGridColumns>
+                <DataGridColumn TItem="ProductDTO"
+                                Field="@nameof(ProductDTO.Id)"
+                                Caption="Идентификатор товара">
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductDTO"
+                                Field="@nameof(ProductDTO.Code)"
+                                Caption="Код товара">
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductDTO"
+                                Field="@nameof(ProductDTO.Name)"
+                                Caption="Название">
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+
+@code {
+    private IEnumerable<ProductDTO> Products { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshProductsCollection();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task RefreshProductsCollection() => Products = await EnterpriseWarehouseApi.GetAllProductsSortedByName();
+}

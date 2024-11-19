@@ -36,11 +36,16 @@
 
     public async Task Show() => await OrganizationModal.Show();
 
-    private async Task CloseOrganizationModalAsync() => await OrganizationModal.Hide();
+    private async Task CloseOrganizationModalAsync()
+    {
+        NewOrganization = new();
+        await OrganizationModal.Hide();
+    }
 
     private async Task CreateOrganizationAsync()
     {
         await EnterpriseWarehouseApi.CreateOrganization(NewOrganization);
+        NewOrganization = new();
         await OrganizationModal.Hide();
         await OnOrganizationAdded.InvokeAsync();
     }

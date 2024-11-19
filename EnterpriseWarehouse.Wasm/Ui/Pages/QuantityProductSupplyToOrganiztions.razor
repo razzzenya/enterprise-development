@@ -1,0 +1,45 @@
+﻿@page "/get-quantity-product-supply-to-organizations"
+@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Количество товара, поставленного организации</h4>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="ProductSupplyToOrganizationsDTO"
+                  Data="Products"
+                  Responsive
+                  Striped>
+            <DataGridColumns>
+                <DataGridColumn TItem="ProductSupplyToOrganizationsDTO"
+                                Field="@nameof(ProductSupplyToOrganizationsDTO.TotalQuantity)"
+                                Caption="Общее кол-во">
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductSupplyToOrganizationsDTO"
+                                Field="@nameof(ProductSupplyToOrganizationsDTO.ProductName)"
+                                Caption="Название товара">
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductSupplyToOrganizationsDTO"
+                                Field="@nameof(ProductSupplyToOrganizationsDTO.OrganizationName)"
+                                Caption="Название организации">
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+
+@code {
+    private IEnumerable<ProductSupplyToOrganizationsDTO> Products { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        Products = await EnterpriseWarehouseApi.GetQuantityProductSupplyToOrganiztions();
+        await base.OnInitializedAsync();
+    }
+}
+

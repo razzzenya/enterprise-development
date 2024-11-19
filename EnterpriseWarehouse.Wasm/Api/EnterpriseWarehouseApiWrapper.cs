@@ -1,4 +1,6 @@
-﻿namespace EnterpriseWarehouse.Wasm.Api;
+﻿using Microsoft.VisualBasic;
+
+namespace EnterpriseWarehouse.Wasm.Api;
 
 public class EnterpriseWarehouseApiWrapper(IConfiguration configuration) : IEnterpriseWarehouseApiWrapper
 {
@@ -28,4 +30,11 @@ public class EnterpriseWarehouseApiWrapper(IConfiguration configuration) : IEnte
     public async Task<CellDTO> GetCell(int id) => await _client.CellGETAsync(id);
     public async Task<OrganizationDTO> GetOrganization(int id) => await _client.OrganizationGETAsync(id);
     public async Task<SupplyDTO> GetSupply(int id) => await _client.SupplyGETAsync(id);
+
+    public async Task<IEnumerable<ProductDTO>> GetAllProductsSortedByName() => await _client.SortedProductsAsync();
+    public async Task<IEnumerable<ProductDTO>> GetProductsRecieveOnDate(string name, DateTime date) => await _client.ProductsRecivedOnDateAsync(name, date);
+    public async Task<IEnumerable<CellDTO>> GetCurrentWarehouseState() => await _client.WarehouseStateAsync();
+    public async Task<IEnumerable<OrganizationDTO>> GetMaxSuppliesOrganizations(DateTime startDate, DateTime endDate) => await _client.MaxSuppliesOrganizationsAsync(startDate, endDate);
+    public async Task<IEnumerable<ProductQuantityDTO>> GetFiveMaxQuantityProducts() => await _client.FiveMaxQuantityProductsAsync();
+    public async Task<IEnumerable<ProductSupplyToOrganizationsDTO>> GetQuantityProductSupplyToOrganiztions() => await _client.GetQuantityProductSupplyToOrganizationsAsync();
 }

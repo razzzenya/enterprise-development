@@ -1,0 +1,86 @@
+﻿@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
+
+<Modal @ref="SupplyModal">
+    <Alert Color="Color.Danger" @bind-Visible="@IsAlertVisible">
+        <AlertMessage>Вы указали несуществующие идентификаторы при изменении записи!</AlertMessage>
+    </Alert>
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>Изменить поставку</ModalTitle>
+                <CloseButton Clicked="CloseSupplyModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Идентификатор товара</FieldLabel>
+                    @if (SupplyToUpdate != null)
+                    {
+                        <InputNumber @bind-Value="SupplyToUpdate.ProductId" />
+                    }
+                </Field>
+                <Field>
+                    <FieldLabel>Идентификатор организации</FieldLabel>
+                    @if (SupplyToUpdate != null)
+                    {
+                        <InputNumber @bind-Value="SupplyToUpdate.OrganizationId" />
+                    }
+                </Field>
+                <Field>
+                    <FieldLabel>Дата поставки</FieldLabel>
+                    @if (SupplyToUpdate != null)
+                    {
+                        <InputDate @bind-Value="SupplyToUpdate.SupplyDate" />
+                    }
+                </Field>
+                <Field>
+                    <FieldLabel>Количество товара</FieldLabel>
+                    @if (SupplyToUpdate != null)
+                    {
+                        <InputNumber @bind-Value="SupplyToUpdate.Quantity" />
+                    }
+                </Field>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="CloseSupplyModalAsync">Отмена</Button>
+                <Button Color="Color.Primary" Clicked="UpdateSupplyAsync">Изменить</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public EventCallback OnSupplyUpdated { get; set; }
+    [Parameter]
+    public int Id { get; set; }
+    [Parameter]
+    public SupplyCreateDTO? SupplyToUpdate { get; set; }
+    private bool IsAlertVisible = false;
+    private Modal SupplyModal { get; set; } = new();
+
+    public async Task Show() => await SupplyModal.Show();
+
+    private async Task CloseSupplyModalAsync()
+    {
+        IsAlertVisible = false;
+        SupplyToUpdate = new();
+        await SupplyModal.Hide();
+    }
+
+    private async Task UpdateSupplyAsync()
+    {
+        try
+        {
+            await EnterpriseWarehouseApi.UpdateSupply(Id, SupplyToUpdate!);
+            SupplyToUpdate = new();
+            await SupplyModal.Hide();
+            await OnSupplyUpdated.InvokeAsync();
+        }
+        catch
+        {
+            IsAlertVisible = true;
+        }
+    }
+}

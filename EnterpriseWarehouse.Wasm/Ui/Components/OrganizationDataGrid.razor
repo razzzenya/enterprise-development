@@ -40,12 +40,16 @@
                     </DisplayTemplate>
                 </DataGridColumn>
                 <DataGridColumn TItem="OrganizationDTO"
+                                Field="@nameof(OrganizationDTO.Id)"
+                                Caption="Идентификатор организации">
+                </DataGridColumn>
+                <DataGridColumn TItem="OrganizationDTO"
                                 Field="@nameof(OrganizationDTO.Name)"
-                                Caption="Код товара">
+                                Caption="Название">
                 </DataGridColumn>
                 <DataGridColumn TItem="OrganizationDTO"
                                 Field="@nameof(OrganizationDTO.Address)"
-                                Caption="Название">
+                                Caption="Адрес">
                 </DataGridColumn>
             </DataGridColumns>
         </DataGrid>
@@ -57,8 +61,6 @@
 
 
 @code {
-    [Parameter]
-    public bool IsNested { get; set; }
     [Parameter]
     public EventCallback OnDataChanged { get; set; }
 

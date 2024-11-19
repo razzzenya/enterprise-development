@@ -1,0 +1,65 @@
+﻿@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
+
+<Modal @ref="CellModal">
+    <Alert Color="Color.Danger" @bind-Visible="@IsAlertVisible">
+        <AlertMessage>Указанный товар - @NewCell.ProductId, не был найден!</AlertMessage>
+    </Alert>
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>Новая ячейка склада</ModalTitle>
+                <CloseButton Clicked="CloseCellModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Идентификатор товара</FieldLabel>
+                    <InputNumber @bind-Value="NewCell.ProductId" />
+                </Field>
+                <Field>
+                    <FieldLabel>Количество товара</FieldLabel>
+                    <InputNumber @bind-Value="NewCell.Quantity" />
+                </Field>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="CloseCellModalAsync">Отмена</Button>
+                <Button Color="Color.Primary" Clicked="CreateCellAsync">Создать</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public EventCallback OnCellAdded { get; set; }
+
+    private bool IsAlertVisible = false;
+    private Modal CellModal { get; set; } = new();
+    private CellCreateDTO NewCell { get; set; } = new();
+
+    public async Task Show() => await CellModal.Show();
+
+    private async Task CloseCellModalAsync()
+    {
+        IsAlertVisible = false;
+        NewCell = new();
+        await CellModal.Hide();
+    }
+
+    private async Task CreateCellAsync()
+    {
+        try
+        {
+            await EnterpriseWarehouseApi.CreateCell(NewCell);
+            NewCell = new();
+            IsAlertVisible = false;
+            await CellModal.Hide();
+            await OnCellAdded.InvokeAsync();
+        }
+        catch
+        {
+            IsAlertVisible = true;
+        }
+    }
+}

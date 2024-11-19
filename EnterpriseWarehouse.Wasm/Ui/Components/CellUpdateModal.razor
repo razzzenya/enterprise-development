@@ -1,0 +1,73 @@
+﻿@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
+
+<Modal @ref="CellModal">
+    <Alert Color="Color.Danger" @bind-Visible="@IsAlertVisible">
+        <AlertMessage>Указанный товар - @CellToUpdate?.ProductId, не был найден!</AlertMessage>
+    </Alert>
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>Изменить ячейку</ModalTitle>
+                <CloseButton Clicked="CloseCellModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Идентификатор товара</FieldLabel>
+                    @if (CellToUpdate != null)
+                    {
+                        <InputNumber @bind-Value="CellToUpdate.ProductId" />
+                    }
+                </Field>
+                <Field>
+                    <FieldLabel>Количество товара</FieldLabel>
+                    @if (CellToUpdate != null)
+                    {
+                        <InputNumber @bind-Value="CellToUpdate.Quantity" />
+                    }
+                </Field>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="CloseCellModalAsync">Отмена</Button>
+                <Button Color="Color.Primary" Clicked="UpdateCellAsync">Изменить</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public EventCallback OnCellUpdated { get; set; }
+    [Parameter]
+    public int Id { get; set; }
+    [Parameter]
+    public CellCreateDTO? CellToUpdate { get; set; }
+    private bool IsAlertVisible = false;
+    private Modal CellModal { get; set; } = new();
+
+    public async Task Show() => await CellModal.Show();
+
+    private async Task CloseCellModalAsync()
+    {
+        IsAlertVisible = false;
+        CellToUpdate = new();
+        await CellModal.Hide();
+    }
+
+    private async Task UpdateCellAsync()
+    {
+        try
+        {
+            await EnterpriseWarehouseApi.UpdateCell(Id, CellToUpdate!);
+            CellToUpdate = new();
+            IsAlertVisible = false;
+            await CellModal.Hide();
+            await OnCellUpdated.InvokeAsync();
+        }
+        catch
+        {
+            IsAlertVisible = true;
+        }
+    }
+}

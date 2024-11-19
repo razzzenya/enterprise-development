@@ -1,0 +1,72 @@
+﻿@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
+
+<Modal @ref="SupplyModal">
+    <Alert Color="Color.Danger" @bind-Visible="@IsAlertVisible">
+        <AlertMessage>Вы указали несуществующие идентификаторы при создании новой записи!</AlertMessage>
+    </Alert>
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>Новая поставка</ModalTitle>
+                <CloseButton Clicked="CloseSupplyModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Идентификатор товара</FieldLabel>
+                    <InputNumber @bind-Value="NewSupply.ProductId" />
+                </Field>
+                <Field>
+                    <FieldLabel>Идентификатор организации</FieldLabel>
+                    <InputNumber @bind-Value="NewSupply.OrganizationId" />
+                </Field>
+                <Field>
+                    <FieldLabel>Дата поставки</FieldLabel>
+                    <InputDate @bind-Value="NewSupply.SupplyDate" />
+                </Field>
+                <Field>
+                    <FieldLabel>Количество товара</FieldLabel>
+                    <InputNumber @bind-Value="NewSupply.Quantity" />
+                </Field>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="CloseSupplyModalAsync">Отмена</Button>
+                <Button Color="Color.Primary" Clicked="CreateSupplyAsync">Создать</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public EventCallback OnSupplyAdded { get; set; }
+
+    private bool IsAlertVisible = false;
+    private Modal SupplyModal { get; set; } = new();
+    private SupplyCreateDTO NewSupply { get; set; } = new();
+
+    public async Task Show() => await SupplyModal.Show();
+
+    private async Task CloseSupplyModalAsync()
+    {
+        IsAlertVisible = false;
+        NewSupply = new();
+        await SupplyModal.Hide();
+    }
+
+    private async Task CreateSupplyAsync()
+    {
+        try
+        {
+            await EnterpriseWarehouseApi.CreateSupply(NewSupply);
+            NewSupply = new();
+            await SupplyModal.Hide();
+            await OnSupplyAdded.InvokeAsync();
+        }
+        catch
+        {
+            IsAlertVisible = true;
+        }
+    }
+}

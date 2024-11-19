@@ -1,0 +1,50 @@
+﻿@page "/products-recived-on-date"
+@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
+
+<Card>
+    <Alert Color="Color.Danger" @bind-Visible="@IsAlertVisible">
+        <AlertMessage>Вы не ввели название организации!</AlertMessage>
+    </Alert>
+    <CardHeader>
+        <h4>Товары, поставленные на дату</h4>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="ProductDTO" Data="Products" Responsive Striped>
+            <DataGridColumns>
+                <DataGridColumn TItem="ProductDTO" Field="@nameof(ProductDTO.Id)" Caption="Идентификатор товара" />
+                <DataGridColumn TItem="ProductDTO" Field="@nameof(ProductDTO.Code)" Caption="Код товара" />
+                <DataGridColumn TItem="ProductDTO" Field="@nameof(ProductDTO.Name)" Caption="Название" />
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+<Div>
+    <label>Название организации:</label>
+    <TextEdit @bind-Text="@Name"/>
+
+    <label>Дата:</label>
+    <InputDate @bind-Value="Date" />
+
+    <Button Color="Color.Primary" Clicked="RefreshProductsCollection">Поиск</Button>
+</Div>
+
+@code {
+    private IEnumerable<ProductDTO> Products { get; set; } = [];
+    private DateTime Date { get; set; } = DateTime.Today;
+    private string Name { get; set; } = "";
+    private bool IsAlertVisible = false;
+
+    private async Task RefreshProductsCollection()
+    {
+        try
+        {
+            Products = await EnterpriseWarehouseApi.GetProductsRecieveOnDate(Name, Date.Date);
+            IsAlertVisible = false;
+        }
+        catch
+        {
+            IsAlertVisible = true;
+        }
+    }
+}

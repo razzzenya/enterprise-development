@@ -1,0 +1,113 @@
+﻿@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Ячейки</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary" Clicked="OpenCreateModal">
+                    Создать
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="CellDTO"
+                  Data="Cells"
+                  Responsive
+                  Striped>
+            <DataGridColumns>
+                <DataGridColumn Width="150px"
+                                TItem="CellDTO"
+                                Field="@nameof(CellDTO.Id)"
+                                Caption="Действия">
+                    <DisplayTemplate>
+                        <Dropdown>
+                            <DropdownToggle Color="Color.Primary">
+                                Действия
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem Clicked="() => OpenEditPageAsync(context)">
+                                    Редактировать
+                                </DropdownItem>
+                                <DropdownItem Clicked="() => DeleteCellAsync(context)">
+                                    Удалить
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="CellDTO"
+                                Field="@nameof(CellDTO.Id)"
+                                Caption="Идентификатор ячейки">
+                </DataGridColumn>
+                <DataGridColumn TItem="CellDTO" Caption="Идентификатор товара">
+                    <DisplayTemplate>
+                        @context.Product.Id
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="CellDTO" Caption="Название товара">
+                    <DisplayTemplate>
+                        @context.Product.Name
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="CellDTO"
+                                Field="@nameof(CellDTO.Quantity)"
+                                Caption="Количество товара">
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+<CellCreateModal @ref="CellCreateModal" OnCellAdded="@HandleCellListChanged" />
+<CellUpdateModal @ref="CellUpdateModal" CellToUpdate="SelectedCell" Id="SelectedId" OnCellUpdated="@HandleCellListChanged" />
+
+
+@code {
+    [Parameter]
+    public EventCallback OnDataChanged { get; set; }
+
+    private IEnumerable<CellDTO> Cells { get; set; } = [];
+    private int SelectedId { get; set; }
+    private CellCreateDTO? SelectedCell { get; set; }
+    private CellCreateModal CellCreateModal { get; set; } = new();
+    private CellUpdateModal CellUpdateModal { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshCellsCollection();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task OpenEditPageAsync(CellDTO context)
+    {
+        SelectedId = context.Id;
+        SelectedCell = new()
+            {
+                ProductId = context.Product.Id,
+                Quantity = context.Quantity
+            };
+        await CellUpdateModal.Show();
+    }
+
+    private async Task DeleteCellAsync(CellDTO context)
+    {
+        await EnterpriseWarehouseApi.DeleteCell(context.Id);
+        await RefreshCellsCollection();
+        await OnDataChanged.InvokeAsync();
+    }
+
+    private async Task HandleCellListChanged()
+    {
+        await RefreshCellsCollection();
+        await OnDataChanged.InvokeAsync();
+    }
+
+    private async Task OpenCreateModal() => await CellCreateModal.Show();
+
+
+    private async Task RefreshCellsCollection() => Cells = await EnterpriseWarehouseApi.GetAllCells();
+}

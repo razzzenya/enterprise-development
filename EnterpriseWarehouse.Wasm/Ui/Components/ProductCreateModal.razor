@@ -36,11 +36,15 @@
 
     public async Task Show() => await ProductModal.Show();
 
-    private async Task CloseProductModalAsync() => await ProductModal.Hide();
-
+    private async Task CloseProductModalAsync()
+    {
+        NewProduct = new();
+        await ProductModal.Hide();
+    }
     private async Task CreateProductAsync()
     {
         await EnterpriseWarehouseApi.CreateProduct(NewProduct);
+        NewProduct = new();
         await ProductModal.Hide();
         await OnProductAdded.InvokeAsync();
     }

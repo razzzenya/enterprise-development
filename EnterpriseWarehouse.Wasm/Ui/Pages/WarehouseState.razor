@@ -1,0 +1,52 @@
+﻿@page "/warehouse-state"
+@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Ячейки</h4>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="CellDTO"
+                  Data="Cells"
+                  Responsive
+                  Striped>
+            <DataGridColumns>
+                <DataGridColumn TItem="CellDTO"
+                                Field="@nameof(CellDTO.Id)"
+                                Caption="Идентификатор ячейки">
+                </DataGridColumn>
+                <DataGridColumn TItem="CellDTO" Caption="Идентификатор товара">
+                    <DisplayTemplate>
+                        @context.Product.Id
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="CellDTO" Caption="Название товара">
+                    <DisplayTemplate>
+                        @context.Product.Name
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="CellDTO"
+                                Field="@nameof(CellDTO.Quantity)"
+                                Caption="Количество товара">
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+
+@code {
+    private IEnumerable<CellDTO> Cells { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshCellsCollection();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task RefreshCellsCollection() => Cells = await EnterpriseWarehouseApi.GetCurrentWarehouseState();
+}

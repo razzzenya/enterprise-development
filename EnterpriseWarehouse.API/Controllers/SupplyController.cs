@@ -74,7 +74,7 @@ public class SupplyController(IEntityService<SupplyDTO, SupplyCreateDTO> service
         {
             return NotFound();
         }
-        return Ok();
+        return Ok(result);
     }
 
     /// <summary>
