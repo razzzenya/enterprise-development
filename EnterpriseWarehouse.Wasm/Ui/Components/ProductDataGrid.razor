@@ -61,9 +61,6 @@
 
 
 @code {
-    [Parameter]
-    public EventCallback OnDataChanged { get; set; }
-
     private IEnumerable<ProductDTO> Products { get; set; } = [];
     private int SelectedId { get; set; }
     private ProductCreateDTO? SelectedProduct { get; set; }
@@ -91,17 +88,14 @@
     {
         await EnterpriseWarehouseApi.DeleteProduct(context.Id);
         await RefreshProductsCollection();
-        await OnDataChanged.InvokeAsync();
     }
 
     private async Task HandleProductListChanged()
     {
         await RefreshProductsCollection();
-        await OnDataChanged.InvokeAsync();
     }
 
     private async Task OpenCreateModal() => await ProductCreateModal.Show();
-
 
     private async Task RefreshProductsCollection() => Products = await EnterpriseWarehouseApi.GetAllProducts();
 }

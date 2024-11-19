@@ -74,9 +74,6 @@
 
 
 @code {
-    [Parameter]
-    public EventCallback OnDataChanged { get; set; }
-
     private IEnumerable<SupplyDTO> Supplies { get; set; } = [];
     private int SelectedId { get; set; }
     private SupplyCreateDTO? SelectedSupply { get; set; }
@@ -106,17 +103,14 @@
     {
         await EnterpriseWarehouseApi.DeleteSupply(context.Id);
         await RefreshSuppliesCollection();
-        await OnDataChanged.InvokeAsync();
     }
 
     private async Task HandleSupplyListChanged()
     {
         await RefreshSuppliesCollection();
-        await OnDataChanged.InvokeAsync();
     }
 
     private async Task OpenCreateModal() => await SupplyCreateModal.Show();
-
 
     private async Task RefreshSuppliesCollection() => Supplies = await EnterpriseWarehouseApi.GetAllSupplies();
 }

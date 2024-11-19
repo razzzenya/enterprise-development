@@ -61,9 +61,6 @@
 
 
 @code {
-    [Parameter]
-    public EventCallback OnDataChanged { get; set; }
-
     private IEnumerable<OrganizationDTO> Organizations { get; set; } = [];
     private int SelectedId { get; set; }
     private OrganizationCreateDTO? SelectedOrganization { get; set; }
@@ -91,17 +88,14 @@
     {
         await EnterpriseWarehouseApi.DeleteOrganization(context.Id);
         await RefreshOrganizationCollection();
-        await OnDataChanged.InvokeAsync();
     }
 
     private async Task HandleOrganizationListChanged()
     {
         await RefreshOrganizationCollection();
-        await OnDataChanged.InvokeAsync();
     }
 
     private async Task OpenCreateModal() => await OrganizationCreateModal.Show();
-
 
     private async Task RefreshOrganizationCollection() => Organizations = await EnterpriseWarehouseApi.GetAllOrganizations();
 }

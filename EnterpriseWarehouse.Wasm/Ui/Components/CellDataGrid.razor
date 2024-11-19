@@ -67,9 +67,6 @@
 
 
 @code {
-    [Parameter]
-    public EventCallback OnDataChanged { get; set; }
-
     private IEnumerable<CellDTO> Cells { get; set; } = [];
     private int SelectedId { get; set; }
     private CellCreateDTO? SelectedCell { get; set; }
@@ -97,13 +94,11 @@
     {
         await EnterpriseWarehouseApi.DeleteCell(context.Id);
         await RefreshCellsCollection();
-        await OnDataChanged.InvokeAsync();
     }
 
     private async Task HandleCellListChanged()
     {
         await RefreshCellsCollection();
-        await OnDataChanged.InvokeAsync();
     }
 
     private async Task OpenCreateModal() => await CellCreateModal.Show();
