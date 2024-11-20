@@ -1,6 +1,9 @@
 ﻿@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
 
 <Modal @ref="CellModal">
+    <Alert Color="Color.Danger" @bind-Visible="@IsAlertVisible">
+        <AlertMessage>Список товаров пуст!</AlertMessage>
+    </Alert>
     <ModalContent Centered>
         <Form>
             <ModalHeader>
@@ -47,6 +50,7 @@
     public CellCreateDTO? CellToUpdate { get; set; }
     private IEnumerable<ProductDTO>? Products { get; set; }
     private Modal CellModal { get; set; } = new();
+    private bool IsAlertVisible { get; set; } = false;
 
     public async Task Show()
     {
@@ -56,6 +60,7 @@
 
     private async Task CloseCellModalAsync()
     {
+        IsAlertVisible = false;
         CellToUpdate = new();
         await CellModal.Hide();
     }
@@ -63,13 +68,27 @@
     private async Task LoadProductsAsync()
     {
         Products = await EnterpriseWarehouseApi.GetAllProducts();
+        if (Products.FirstOrDefault() is null)
+        {
+            CellToUpdate!.ProductId = 0;
+        }
+        else
+        {
+            CellToUpdate!.ProductId = Products.FirstOrDefault()!.Id;
+        }
     }
 
     private async Task UpdateCellAsync()
     {
-        await EnterpriseWarehouseApi.UpdateCell(Id, CellToUpdate!);
-        CellToUpdate = new();
-        await CellModal.Hide();
-        await OnCellUpdated.InvokeAsync();
+        try
+        {
+            await EnterpriseWarehouseApi.UpdateCell(Id, CellToUpdate!);
+            await CloseCellModalAsync();
+            await OnCellUpdated.InvokeAsync();
+        }
+        catch
+        {
+            IsAlertVisible = true;
+        }
     }
 }

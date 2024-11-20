@@ -1,6 +1,9 @@
 ﻿@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
 
 <Modal @ref="SupplyModal">
+    <Alert Color="Color.Danger" @bind-Visible="@IsAlertVisible">
+        <AlertMessage>Список товаров или организаций пуст!</AlertMessage>
+    </Alert>
     <ModalContent Centered>
         <Form>
             <ModalHeader>
@@ -64,35 +67,60 @@
     private IEnumerable<ProductDTO>? Products { get; set; }
     private IEnumerable<OrganizationDTO>? Organizations { get; set; }
     private Modal SupplyModal { get; set; } = new();
+    private bool IsAlertVisible { get; set; } = false;
 
     public async Task Show()
     {
         await LoadProductsAsync();
         await LoadOrganizationsAsync();
+        SupplyToUpdate!.SupplyDate = DateTime.Now;
         await SupplyModal.Show();
     }
 
     private async Task CloseSupplyModalAsync()
     {
+        IsAlertVisible = false;
         SupplyToUpdate = new();
         await SupplyModal.Hide();
     }
 
     private async Task UpdateSupplyAsync()
     {
-        await EnterpriseWarehouseApi.UpdateSupply(Id, SupplyToUpdate!);
-        SupplyToUpdate = new();
-        await SupplyModal.Hide();
-        await OnSupplyUpdated.InvokeAsync();
+        try
+        {
+            await EnterpriseWarehouseApi.UpdateSupply(Id, SupplyToUpdate!);
+            await CloseSupplyModalAsync();
+            await OnSupplyUpdated.InvokeAsync();
+        }
+        catch
+        {
+            IsAlertVisible = true;
+        }
     }
 
     private async Task LoadProductsAsync()
     {
         Products = await EnterpriseWarehouseApi.GetAllProducts();
+        if (Products.FirstOrDefault() is null)
+        {
+            SupplyToUpdate!.ProductId = 0;
+        }
+        else
+        {
+            SupplyToUpdate!.ProductId = Products.FirstOrDefault()!.Id;
+        }
     }
 
     private async Task LoadOrganizationsAsync()
     {
         Organizations = await EnterpriseWarehouseApi.GetAllOrganizations();
+        if (Organizations.FirstOrDefault() is null)
+        {
+            SupplyToUpdate!.OrganizationId = 0;
+        }
+        else
+        {
+            SupplyToUpdate!.OrganizationId = Organizations.FirstOrDefault()!.Id;
+        }
     }
 }

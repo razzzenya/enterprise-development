@@ -1,6 +1,9 @@
 ﻿@inject IEnterpriseWarehouseApiWrapper EnterpriseWarehouseApi
 
 <Modal @ref="SupplyModal">
+    <Alert Color="Color.Danger" @bind-Visible="@IsAlertVisible">
+        <AlertMessage>Список товаров или организаций пуст!</AlertMessage>
+    </Alert>
     <ModalContent Centered>
         <Form>
             <ModalHeader>
@@ -59,35 +62,60 @@
     private SupplyCreateDTO NewSupply { get; set; } = new();
     private IEnumerable<ProductDTO>? Products { get; set; }
     private IEnumerable<OrganizationDTO>? Organizations { get; set; }
+    private bool IsAlertVisible { get; set; } = false;
+
     public async Task Show()
     {
         await LoadProductsAsync();
         await LoadOrganizationsAsync();
+        NewSupply.SupplyDate = DateTime.Now;
         await SupplyModal.Show();
     }
 
     private async Task CloseSupplyModalAsync()
     {
+        IsAlertVisible = false;
         NewSupply = new();
         await SupplyModal.Hide();
     }
 
     private async Task CreateSupplyAsync()
     {
-
-        await EnterpriseWarehouseApi.CreateSupply(NewSupply);
-        NewSupply = new();
-        await SupplyModal.Hide();
-        await OnSupplyAdded.InvokeAsync();
+        try
+        {
+            await EnterpriseWarehouseApi.CreateSupply(NewSupply);
+            await CloseSupplyModalAsync();
+            await OnSupplyAdded.InvokeAsync();
+        }
+        catch
+        {
+            IsAlertVisible = true;
+        }
     }
 
     private async Task LoadProductsAsync()
     {
         Products = await EnterpriseWarehouseApi.GetAllProducts();
+        if (Products.FirstOrDefault() is null)
+        {
+            NewSupply.ProductId = 0;
+        }
+        else
+        {
+            NewSupply.ProductId = Products.FirstOrDefault()!.Id;
+        }
     }
 
     private async Task LoadOrganizationsAsync()
     {
         Organizations = await EnterpriseWarehouseApi.GetAllOrganizations();
+        if (Organizations.FirstOrDefault() is null)
+        {
+            NewSupply.OrganizationId = 0;
+        }
+        else
+        {
+            NewSupply.OrganizationId = Organizations.FirstOrDefault()!.Id;
+        }
     }
 }
