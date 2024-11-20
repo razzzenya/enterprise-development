@@ -48,9 +48,19 @@
                         @context.Product.Id
                     </DisplayTemplate>
                 </DataGridColumn>
+                <DataGridColumn TItem="SupplyDTO" Caption="Название товара">
+                    <DisplayTemplate>
+                        @context.Product.Name
+                    </DisplayTemplate>
+                </DataGridColumn>
                 <DataGridColumn TItem="SupplyDTO" Caption="Идентификатор организации">
                     <DisplayTemplate>
                         @context.Organization.Id
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="SupplyDTO" Caption="Название организации">
+                    <DisplayTemplate>
+                        @context.Organization.Name
                     </DisplayTemplate>
                 </DataGridColumn>
                 <DataGridColumn TItem="SupplyDTO"
