@@ -6,7 +6,7 @@ using EnterpriseWarehouse.Domain.Entities;
 using EnterpriseWarehouse.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-//tesst
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
